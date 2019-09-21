@@ -113,3 +113,5 @@ sub append_feed
 create_feeds_json();
 my %new_feed = parse_feed("./waypoint_radio.xml");
 append_feed(%new_feed);
+%new_feed = parse_feed("./decrepitos.xml");
+append_feed(%new_feed);
