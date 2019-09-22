@@ -5,7 +5,7 @@ sub get_episodes
 {
 	my $file_path = $_[0];      #string with the path to *.xml file
 
-	open (FEED, $file_path);
+	open (FEED, $file_path) or die "Cant open $file_path!";
 
 	my $feed = "";
 
@@ -43,7 +43,7 @@ sub get_episodes
 }
 
 #programa de teste
-my @episodes = get_episodes(".feeds/hello_internet/hello_internet.xml");
+my @episodes = get_episodes("./decrepitos.xml");
 
 for my $i (0 .. $#episodes)
 {
@@ -54,3 +54,5 @@ for my $i (0 .. $#episodes)
 	
 	print "$episodes[$i]{title}\n";
 }
+
+1;
