@@ -82,7 +82,7 @@ sub append_feed
 
 	print $fh $new_file_content;
 
-		
+	close($fh);		
 }
 
 #programa de teste
