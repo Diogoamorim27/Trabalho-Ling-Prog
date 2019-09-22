@@ -4,17 +4,8 @@ use Text::Unaccent::PurePerl qw(unac_string);
 use JSON;
 use File::Slurper;
 
-sub normalize_string
-{ 
-	my $string = $_[0]; 
-
-	my $normalized = unac_string("UTF-8", $string);
-
-	$normalized =~ s/ /_/g;
-	$normalized = lc $normalized;
-
-	return $normalized; 
-}
+require "./create_empty_json_array.pl";
+require "./normalize_string.pl";
 
 sub parse_feed
 {
@@ -71,19 +62,6 @@ sub add_feed
 	return %feed_data;
 }
 
-sub create_feeds_json
-{
-
-	my @empty_array;
-	my $json_empty_array = to_json \@empty_array;
-	if (-e "feeds.json") {
-		system("rm feeds.json");
-	}
-	open(my $fh, ">", "feeds.json") or die "cant open feeds.json";
-	print $fh $json_empty_array;
-	close($fh);
-
-}
 sub append_feed
 {
 	my $feeds_file_path = "feeds.json";
@@ -110,7 +88,7 @@ sub append_feed
 #programa de teste
 #
 #
-create_feeds_json();
+create_empty_json_array("./feeds.json");
 my %new_feed = parse_feed("./waypoint_radio.xml");
 append_feed(%new_feed);
 %new_feed = parse_feed("./decrepitos.xml");
