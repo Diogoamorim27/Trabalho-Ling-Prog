@@ -10,21 +10,23 @@ require "./normalize_string.pl";
 sub parse_feed
 {
 	my $file_path = $_[0];      #string with the path to *.xml file
-	my %feed_data; #= %{$_[1]};  #reference to hash with feed data
+	my %feed_data;
 
-	open (FEED, $file_path)
-		or die "Cant open < $file_path \n";
+	open (my $fh, "<", $file_path)
+		or die "Can't open < $file_path: $!\n";
 	
 	my $feed = "";
 
-	while (my $reader = <FEED>)
+	while (my $reader = <$fh>)
 	{
 		$feed = $feed.$reader;
 	}
 
-	($feed_data{title})= $feed =~ /<title>(.*?)<\/title>/;
+	($feed_data{title})= $feed =~ /<title>(.*?)<\/title>/
+		or die "Invalid feed file - no <title> tag.\n";
 
-	($feed_data{language})= $feed =~ /<language>(.*?)<\/language>/;
+	($feed_data{language})= $feed =~ /<language>(.*?)<\/language>/
+		or $feed_data{language} = "pt-BR";
 
 	foreach my $key (keys %feed_data)
 	{
@@ -34,10 +36,37 @@ sub parse_feed
 		}
 	}
 
-	close(FEED);
+	close($fh)
+		|| warn "$file_path - close failed: $!\n";
 
 	return %feed_data;
 }
+
+
+sub append_feed
+{
+	my $feeds_file_path = "feeds.json";
+	my $new_feed_json;
+	
+	my $file_contents = File::Slurper::read_text($feeds_file_path);
+
+	open (my $fh, '>', $feeds_file_path)
+		or die "Can't open < $feeds_file_path: $! \n ";
+
+	my %new_feed_hash = @_;
+
+	my @file_content_array = @{decode_json($file_contents)};
+
+	push @file_content_array, {%new_feed_hash};
+
+	my $new_file_content = to_json \@file_content_array, {pretty => 1} ;
+
+	print $fh $new_file_content;
+
+	close ($fh)
+		|| warn "$feeds_file_path - close failed: $!\n";
+}
+
 
 sub add_feed
 {
@@ -46,7 +75,8 @@ sub add_feed
 
 	my %feed_data;
 
-	%feed_data = parse_feed($temp_file_path, \%feed_data);
+	%feed_data = parse_feed($temp_file_path);
+
 	$feed_data{url} = $url;
 	my $normalized_title = normalize_string($feed_data{title});
 
@@ -59,37 +89,13 @@ sub add_feed
 	$cli_command = "mv ".$temp_file_path." .feeds/".$normalized_title."/".$normalized_title.".xml";
 	system($cli_command); #changes temporary *.xml file to correct name and moves it to feed directory;
 
+	append_feed(%feed_data);
+
 	return %feed_data;
 }
 
-sub append_feed
-{
-	my $feeds_file_path = "feeds.json";
-	my $new_feed_json;
-	
-	my $file_contents = File::Slurper::read_text($feeds_file_path);
-
-	open (my $fh, '>', $feeds_file_path)
-		or die "Cant open < $feeds_file_path! \n ";
-
-	my %new_feed_hash = @_;
-
-	my @file_content_array = @{decode_json($file_contents)};
-
-	push @file_content_array, {%new_feed_hash};
-
-	my $new_file_content = to_json \@file_content_array, {pretty => 1} ;
-
-	print $fh $new_file_content;
-
-		
-}
 
 #programa de teste
 #
 #
-create_empty_json_array("./feeds.json");
-my %new_feed = parse_feed("./waypoint_radio.xml");
-append_feed(%new_feed);
-%new_feed = parse_feed("./decrepitos.xml");
-append_feed(%new_feed);
+add_feed("https://decrepitos.com/podcast/feed.xml", "this_american_life.xml");

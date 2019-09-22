@@ -1,22 +1,30 @@
 use strict;
 use warnings;
 
+require "./normalize_string.pl";
+
 sub get_episodes
 {
-	my $file_path = $_[0];      #string with the path to *.xml file
+	my $feed_name = $_[0];      #string with the title of the chosen feed
 
-	open (FEED, $file_path);
+	$feed_name = normalize_string($feed_name);
+
+	my $file_path = ".feeds/".$feed_name."/".$feed_name.".xml";
+
+	open (my $fh, "<", $file_path)
+		or die "Can't open $file_path: $!\n";
 
 	my $feed = "";
 
-	while (my $reader = <FEED>)
+	while (my $reader = <$fh>)
 	{
 		$feed = $feed.$reader;
 	}
 
 	my @episodes;
 
-	(my @episodes_data_raw) = $feed =~ /<item>(.*?)<\/item>/gs;
+	(my @episodes_data_raw) = $feed =~ /<item>(.*?)<\/item>/gs
+		or die "No episode on feed\n";
 
 	foreach my $episode (@episodes_data_raw)
 	{
@@ -37,13 +45,14 @@ sub get_episodes
 		unshift @episodes, \%episode_data;
 	}
 
-	close(FEED);
+	close($fh)
+		|| warn "$file_path - close failed: $!\n";
 
 	return @episodes;
 }
 
 #programa de teste
-my @episodes = get_episodes(".feeds/hello_internet/hello_internet.xml");
+my @episodes = get_episodes("Decrépitos");
 
 for my $i (0 .. $#episodes)
 {
