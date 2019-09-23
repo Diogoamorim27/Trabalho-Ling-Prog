@@ -19,7 +19,7 @@ sub create_empty_json_array
 
 	print $fh @json_empty_array;
 
-	close($fh);
+	close($fh)
 		|| warn "$file_name - close failed: $!\n";
 
 }

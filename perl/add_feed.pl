@@ -80,7 +80,15 @@ sub add_feed
 	$feed_data{url} = $url;
 	my $normalized_title = normalize_string($feed_data{title});
 
-	my $cli_command = "mkdir ../.feeds/".$normalized_title;
+	my $cli_command;
+
+	if (!(-d "../.feeds"))
+	{
+		$cli_command = "mkdir ../.feeds";
+		system($cli_command); #create .feeds directory
+	}
+
+	$cli_command = "mkdir ../.feeds/".$normalized_title;
 	system($cli_command); #create feed directory
 
 	$cli_command = "mkdir ../.feeds/".$normalized_title."/eps";
@@ -98,4 +106,4 @@ sub add_feed
 #programa de teste
 #
 #
-#add_feed("https://decrepitos.com/podcast/feed.xml", "this_american_life.xml");
+add_feed("https://decrepitos.com/podcast/feed.xml", "../nerdcast.xml");
