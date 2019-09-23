@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-require "./normalize_string.pl";
+require "./perl/normalize_string.pl";
 
 #this subroutine is used to get the episode file extension from its url
 sub generate_episode_file_path
@@ -10,7 +10,7 @@ sub generate_episode_file_path
 	my %episode = %{$_[1]};
 
 	my($extension) = $episode{url} =~ /([^.]*)$/; #gets content after last "." character
-	my $episode_path = "../.feeds/".normalize_string($feed_title)."/eps/".normalize_string($episode{title}).".".$extension;
+	my $episode_path = ".feeds/".normalize_string($feed_title)."/eps/".normalize_string($episode{title}).".".$extension;
 
 	return $episode_path;
 }

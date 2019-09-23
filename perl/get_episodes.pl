@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-require "./normalize_string.pl";
+require "./perl/normalize_string.pl";
 
 sub get_episodes
 {
@@ -9,7 +9,7 @@ sub get_episodes
 
 	$feed_name = normalize_string($feed_name);
 
-	my $file_path = "../.feeds/".$feed_name."/".$feed_name.".xml";
+	my $file_path = ".feeds/".$feed_name."/".$feed_name.".xml";
 
 	open (my $fh, "<", $file_path)
 		or die "Can't open $file_path: $!\n";

@@ -4,8 +4,8 @@ use Text::Unaccent::PurePerl qw(unac_string);
 use JSON;
 use File::Slurper;
 
-require "./add_episode.pl";
-require "./normalize_string.pl";
+require "./perl/add_episode.pl";
+require "./perl/normalize_string.pl";
 
 my $normalized_title = normalize_string("Decrépitos 230 - Respondendo Testes da Capricho 5");
 

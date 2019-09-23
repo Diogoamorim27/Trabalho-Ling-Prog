@@ -4,9 +4,9 @@ use Text::Unaccent::PurePerl qw(unac_string);
 use JSON;
 use File::Slurper;
 
-require "./get_episodes.pl";
-require "./add_feed.pl";
-require "./normalize_string.pl";
+require "./perl/get_episodes.pl";
+require "./perl/add_feed.pl";
+require "./perl/normalize_string.pl";
 
 sub add_episode_to_json
 {
