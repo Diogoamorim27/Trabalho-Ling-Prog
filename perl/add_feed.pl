@@ -4,8 +4,8 @@ use Text::Unaccent::PurePerl qw(unac_string);
 use JSON;
 use File::Slurper;
 
-require "./perl/create_empty_json_array.pl";
-require "./perl/normalize_string.pl";
+require "./create_empty_json_array.pl";
+require "./normalize_string.pl";
 
 sub parse_feed
 {
@@ -45,17 +45,20 @@ sub parse_feed
 
 sub append_feed
 {
-	my $feeds_file_path = "feeds.json";
+	my $feeds_file_path = "../feeds.json";
 	my $new_feed_json;
 	
 	my $file_contents = File::Slurper::read_text($feeds_file_path);
 
+	if ($file_contents eq ""){$file_contents = "[]"};
+	print "hi".$file_contents;
+	
 	open (my $fh, '>', $feeds_file_path)
 		or die "Can't open < $feeds_file_path: $! \n ";
 
 	my %new_feed_hash = @_;
 
-	my @file_content_array = @{decode_json($file_contents)};
+	my @file_content_array = @{JSON->new->utf8->decode($file_contents)};
 
 	push @file_content_array, {%new_feed_hash};
 
@@ -88,12 +91,19 @@ sub add_feed
 		system($cli_command); #create .feeds directory
 	}
 
-	$cli_command = "mkdir .feeds/".$normalized_title;
-	system($cli_command); #create feed directory
+	
+	if (!(-d ".feeds/".$normalized_title))
+	{
+		$cli_command = "mkdir .feeds/".$normalized_title;
+		system($cli_command); #create feed directory
+	}
 
-	$cli_command = "mkdir .feeds/".$normalized_title."/eps";
-	system($cli_command); #create downloaded episodes directory
-
+	if (!(-d ".feeds/".$normalized_title."/eps"))	
+	{ 
+		$cli_command = "mkdir .feeds/".$normalized_title."/eps";
+		system($cli_command); #create downloaded episodes directory
+	}
+ 
 	$cli_command = "mv ".$temp_file_path." .feeds/".$normalized_title."/".$normalized_title.".xml";
 	system($cli_command); #changes temporary *.xml file to correct name and moves it to feed directory;
 
@@ -106,4 +116,4 @@ sub add_feed
 #programa de teste
 #
 #
-add_feed("https://decrepitos.com/podcast/feed.xml", "nerdcast.xml");
+add_feed("https://decrepitos.com/podcast/feed.xml", "./feed.xml");
