@@ -4,8 +4,8 @@ use Text::Unaccent::PurePerl qw(unac_string);
 use JSON;
 use File::Slurper;
 
-require "./create_empty_json_array.pl";
-require "./normalize_string.pl";
+require "./perl/create_empty_json_array.pl";
+require "./perl/normalize_string.pl";
 
 sub parse_feed
 {
@@ -45,7 +45,7 @@ sub parse_feed
 
 sub append_feed
 {
-	my $feeds_file_path = "../feeds.json";
+	my $feeds_file_path = "feeds.json";
 	my $new_feed_json;
 	
 	my $file_contents = File::Slurper::read_text($feeds_file_path);
