@@ -51,7 +51,7 @@ sub append_feed
 	my $file_contents = File::Slurper::read_text($feeds_file_path);
 
 	if ($file_contents eq ""){$file_contents = "[]"};
-	print "hi".$file_contents;
+	#print "hi".$file_contents;
 	
 	open (my $fh, '>', $feeds_file_path)
 		or die "Can't open < $feeds_file_path: $! \n ";
@@ -64,7 +64,7 @@ sub append_feed
 
 	my $new_file_content = to_json \@file_content_array, {pretty => 1} ;
 
-	print $fh $new_file_content;
+	#print $fh $new_file_content;
 
 	close ($fh)
 		|| warn "$feeds_file_path - close failed: $!\n";
@@ -116,4 +116,4 @@ sub add_feed
 #programa de teste
 #
 #
-add_feed("https://decrepitos.com/podcast/feed.xml", "./feed.xml");
+#add_feed("https://decrepitos.com/podcast/feed.xml", "anticast.xml");

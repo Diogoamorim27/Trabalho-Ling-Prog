@@ -52,16 +52,16 @@ sub get_episodes
 }
 
 #programa de teste
-my @episodes = get_episodes("Decrépitos");
+#my @episodes = get_episodes("Decrépitos");
 
-for my $i (0 .. $#episodes)
-{
+#for my $i (0 .. $#episodes)
+#{
 	#	for my $attribute ( keys %{$episodes[$i]} )
 	#{
 	#	print "$episodes[$i]{$attribute}\n";
 	#}
 	
-	print "$episodes[$i]{title}\n";
-}
+#	print "$episodes[$i]{title}\n";
+#}
 
 1;

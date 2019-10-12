@@ -5,7 +5,6 @@ use JSON;
 use File::Slurper;
 
 require "./perl/get_episodes.pl";
-require "./perl/add_feed.pl";
 require "./perl/normalize_string.pl";
 
 sub add_episode_to_json
@@ -32,7 +31,7 @@ sub add_episode_to_json
 
 	my $new_file_content = to_json \%feeds_in_file, {pretty => 1};
 
-	print $fh $new_file_content;
+	#print $fh $new_file_content;
 
 	close($fh)
 		|| warn "$episodes_json_path - close failed: $!\n";
