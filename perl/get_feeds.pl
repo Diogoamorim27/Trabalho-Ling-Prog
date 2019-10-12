@@ -25,9 +25,9 @@ sub get_feeds
     foreach my $feed (@feeds_data_raw)
     {
         my %feed_data;
-        ($feed_data{url}) = $feed =~ /"url"\s+:\s+"(.*?)"/;   #$fees_data{url} recebe o que esta entre "\"url\":\"" e "\"," ignorando espacos em branco (\s+)
-        ($feed_data{title}) = $feed =~ /"title"\s+:\s+"(.*?)"/;
-        ($feed_data{language}) = $feed =~ /"language"\s+:\s+"(.*?)"/;
+        ($feed_data{url}) = $feed =~ /"url"\s+:\s+"(.*?)"[,\n]/;   #$feed_data{url} recebe o que esta entre "\"url\":\"" e "\"[,\n]" ignorando espacos em branco (\s+)
+        ($feed_data{title}) = $feed =~ /"title"\s+:\s+"(.*?)"[,\n]/;
+        ($feed_data{language}) = $feed =~ /"language"\s+:\s+"(.*?)"[,\n]/;
         unshift @feeds, \%feed_data;    #guarda o hash do feed na primeira posicao de @feeds, deslocando os outros elementos para a direita
     }
 
