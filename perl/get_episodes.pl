@@ -1,5 +1,7 @@
 use strict;
 use warnings;
+use utf8;
+use open qw(:std :encoding(UTF-8));
 
 require "./perl/normalize_string.pl";
 
@@ -56,10 +58,10 @@ sub get_episodes
 
 #for my $i (0 .. $#episodes)
 #{
-	#	for my $attribute ( keys %{$episodes[$i]} )
-	#{
-	#	print "$episodes[$i]{$attribute}\n";
-	#}
+#		for my $attribute ( keys %{$episodes[$i]} )
+#	{
+#		print "$episodes[$i]{$attribute}\n";
+#	}
 	
 #	print "$episodes[$i]{title}\n";
 #}
