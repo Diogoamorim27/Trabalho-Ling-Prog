@@ -64,7 +64,7 @@ sub append_feed
 
 	my $new_file_content = to_json \@file_content_array, {pretty => 1} ;
 
-	#print $fh $new_file_content;
+	print $fh $new_file_content;
 
 	close ($fh)
 		|| warn "$feeds_file_path - close failed: $!\n";
@@ -116,4 +116,4 @@ sub add_feed
 #programa de teste
 #
 #
-#add_feed("https://decrepitos.com/podcast/feed.xml", "anticast.xml");
+add_feed("https://decrepitos.com/podcast/feed.xml", "./anticast.xml");
