@@ -3,6 +3,9 @@ use warnings;
 use Text::Unaccent::PurePerl qw(unac_string);
 use JSON;
 use File::Slurper;
+use utf8;
+use open qw(:std :encoding(UTF-8));
+use Encode qw( encode_utf8 );
 
 require "./perl/create_empty_json_array.pl";
 require "./perl/normalize_string.pl";
@@ -46,7 +49,6 @@ sub parse_feed
 sub append_feed
 {
 	my $feeds_file_path = "feeds.json";
-	my $new_feed_json;
 	
 	my $file_contents = File::Slurper::read_text($feeds_file_path);
 
@@ -58,7 +60,7 @@ sub append_feed
 
 	my %new_feed_hash = @_;
 
-	my @file_content_array = @{JSON->new->utf8->decode($file_contents)};
+	my @file_content_array = @{JSON->new->utf8->decode(encode_utf8($file_contents))};
 
 	push @file_content_array, {%new_feed_hash};
 
@@ -116,4 +118,4 @@ sub add_feed
 #programa de teste
 #
 #
-add_feed("https://decrepitos.com/podcast/feed.xml", "hello_internet.xml");
+add_feed("https://decrepitos.com/podcast/feed.xml", "decrepitos.xml");

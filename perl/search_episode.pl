@@ -46,8 +46,8 @@ sub search_episodes{
 }
 
 #test program
-#my @result = search_episodes("Decrépitos", "testes da capricho");
+my @result = search_episodes($ARGV[0], "capricho");
 
-#for my $i (0 .. $#result){
-#    print "$result[$i]{title}\n";
-#}
+for my $i (0 .. $#result){
+    print "$result[$i]{title}\n";
+}
