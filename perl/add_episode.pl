@@ -3,7 +3,8 @@ use warnings;
 use Text::Unaccent::PurePerl qw(unac_string);
 use JSON;
 use File::Slurper;
-use Data::Dumper;
+use Data::Dumper; #debugging
+use Unicode::Normalize
 
 require "./perl/get_episodes.pl";
 require "./perl/normalize_string.pl";
@@ -14,9 +15,11 @@ sub add_episode_to_json
 	my %episode_data = %{$_[1]};   
 	my $episodes_json_path = $_[2];
 
-	print Dumper(\%episode_data{"title"});
+	#print Dumper(\%episode_data{"title"});
 
 	my $file_contents = File::Slurper::read_text($episodes_json_path);
+
+	$file_contents = unac_string($file_contents);
 
 	my %feeds_in_file;
 
@@ -25,7 +28,7 @@ sub add_episode_to_json
 	eval {%feeds_in_file = %{decode_json($file_contents)}}; 
 
 	if (!($@ eq "")) {
-		return "error!";
+		return $@;
 	} else {
 
 		my %feeds_in_file = %{decode_json($file_contents)};
@@ -34,8 +37,6 @@ sub add_episode_to_json
 			or die "Can't open < $episodes_json_path: $! \n ";
 	
 		$feeds_in_file{$feed_name}{$episode_data{"title"}} = \%episode_data;
-
-		#print Dumper(\$feeds_in_file{$feed_name}{$episode_data{"title"}});
 
 		my $new_file_content = to_json \%feeds_in_file, {pretty => 1};
 
