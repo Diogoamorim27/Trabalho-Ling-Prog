@@ -19,7 +19,7 @@ sub add_episode_to_json
 
 	my $file_contents = File::Slurper::read_text($episodes_json_path);
 
-	$file_contents = unac_string($file_contents);
+	$file_contents = unac_string("UTF-8", encode_utf8($file_contents));
 
 	my %feeds_in_file;
 

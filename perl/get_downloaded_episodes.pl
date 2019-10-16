@@ -4,7 +4,9 @@ use Text::Unaccent::PurePerl qw(unac_string);
 use JSON;
 use File::Slurper;
 use Data::Dumper; #debugging
-use Unicode::Normalize
+use Encode qw( encode_utf8 );
+use utf8;
+use open qw(:std :encoding(UTF-8));
 
 require "./perl/get_episodes.pl";
 require "./perl/normalize_string.pl";
@@ -18,7 +20,7 @@ sub get_downloaded_episodes_from_feed
 
 	my $file_contents = File::Slurper::read_text($episodes_json_path);
 
-	$file_contents = unac_string($file_contents);
+	$file_contents = unac_string("UTF-8", encode_utf8($file_contents));
 
 	my %feeds_in_file;
 
