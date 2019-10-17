@@ -111,6 +111,7 @@ sub get_new_episodes{
     (my @episodes_data_raw) = $feed =~ /<item>(.*?)<\/item>/gs
             or die "No episode on feed\n";
 
+    my $found = 0;
     LOOP: foreach my $episode (@episodes_data_raw){
             my %episode_data;
             ($episode_data{title}) = $episode =~ /<title>(.*?)<\/title>/;
@@ -123,28 +124,32 @@ sub get_new_episodes{
                             ($episode_data{$key}) = $episode_data{$key} =~ /\Q<![CDATA[\E(.*)\Q]]>\E/;
                     }
             }
-            last LOOP if ($episode_data{title} eq $most_recent_downloaded{title}); #stops if finds most recent downloaded episode
+            if ($episode_data{title} eq $most_recent_downloaded{title}){
+                    $found = 1;
+            }
+            last LOOP if ($found); #stops if finds most recent downloaded episode
 
             unshift @episodes, \%episode_data;
     }
 
     close($fh)
             || warn "$file_path - close failed: $!\n";
-
+    if ($found == 0){
+            @episodes = (); 
+    }
     return \@episodes;
 }
 
+
 #programa de teste
 
-#my @new_eps = @{get_new_episodes("Decrépitos", "episodes.json")};
+my @new_eps = @{get_new_episodes("Decrépitos", "episodes.json")};
 
-#for my $i (0 .. $#new_eps)
-#{
-#		for my $attribute ( keys %{$new_eps[$i]} )
-#	{
-#		print "$new_eps[$i]{$attribute}\n";
-#	}
-	
-#}
-
-1;
+for my $i (0 .. $#new_eps)
+{
+		for my $attribute ( keys %{$new_eps[$i]} )
+	{
+		print "$new_eps[$i]{$attribute}\n";
+	}
+        print "--------------\n";	
+}
