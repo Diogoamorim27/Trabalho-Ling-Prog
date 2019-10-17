@@ -8,6 +8,6 @@ use Unicode::Normalize
 
 require "./perl/get_downloaded_episodes.pl";
 
-my $episodes = get_downloaded_episodes_from_feed("decrepitos", "episodes_broken.json");
+my $episodes = get_downloaded_episodes_from_feed("waypoint", "episodes_broken.json");
 
-print Dumper(values(%{$episodes}));
+print Dumper($episodes);

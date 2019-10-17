@@ -36,7 +36,14 @@ sub get_downloaded_episodes_from_feed
 
 		my %episodes = %feeds_in_file{$feed_name};
 		my @episodes_vector = values(%episodes);
-		return $episodes_vector[0];
+		my $episodes_hash_ref = $episodes_vector[0];
+		my %episodes_hash = %{$episodes_hash_ref};
+		my @final_vector = values(%episodes_hash);
+
+		#print Dumper (@final_vector);
+		
+		return \@final_vector;
+	
 	}
 }
 
