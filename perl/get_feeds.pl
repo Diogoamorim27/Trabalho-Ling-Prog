@@ -3,7 +3,7 @@ use warnings;
 
 sub get_feeds
 {
-    my $file_path = "feeds.json";
+    my $file_path = $_[0];
 
     open (my $fh, "<", $file_path)
         or die "Can't open $file_path: $!\n";
@@ -39,7 +39,7 @@ sub get_feeds
 
 #test program
 
-#my @feeds = get_feeds();
+#my @feeds = get_feeds("feeds.json");
 
 #for my $i (0 .. $#feeds)
 #{
