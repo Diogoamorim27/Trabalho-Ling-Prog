@@ -1,13 +1,14 @@
 use strict;
 use warnings;
-use Text::Unaccent::PurePerl qw(unac_string);
 use JSON;
 use File::Slurper;
 use Data::Dumper; #debugging
-use Unicode::Normalize
+use utf8;
+use open qw(:std :encoding(UTF-8));
 
 require "./perl/get_downloaded_episodes.pl";
 
-my $episodes = get_downloaded_episodes_from_feed("waypoint", "episodes_broken.json");
+my @episodes = @{get_downloaded_episodes_from_feed("Decrépitos", "episodes.json")};
 
-print Dumper($episodes);
+print "$episodes[0]{date}\n";
+#print Dumper($episodes);

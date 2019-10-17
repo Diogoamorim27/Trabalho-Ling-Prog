@@ -1,6 +1,5 @@
 use strict;
 use warnings;
-use Text::Unaccent::PurePerl qw(unac_string);
 use JSON;
 use File::Slurper;
 use Data::Dumper; #debugging
@@ -10,6 +9,6 @@ use open qw(:std :encoding(UTF-8));
 
 require "./perl/delete_episode.pl";
 
-my $episodes = delete_episode("decrepitos","Decrepitos 231 - Respondendo Testes da Capricho 5", "episodes_broken.json");
+my $episodes = delete_episode("Decrépitos","Decrépitos 100 - teste", "episodes.json");
 
 #print Dumper(%{$episodes});

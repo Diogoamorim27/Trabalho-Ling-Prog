@@ -1,12 +1,11 @@
 use strict;
 use warnings;
-use Text::Unaccent::PurePerl qw(unac_string);
 use JSON;
 use File::Slurper;
 use Data::Dumper; #debugging
-use Encode qw( encode_utf8 );
 use utf8;
 use open qw(:std :encoding(UTF-8));
+use Encode qw( encode_utf8 );
 
 require "./perl/get_episodes.pl";
 require "./perl/normalize_string.pl";
@@ -20,7 +19,7 @@ sub get_downloaded_episodes_from_feed
 
 	my $file_contents = File::Slurper::read_text($episodes_json_path);
 
-	$file_contents = unac_string("UTF-8", encode_utf8($file_contents));
+        $file_contents = encode_utf8($file_contents);
 
 	my %feeds_in_file;
 
@@ -36,7 +35,8 @@ sub get_downloaded_episodes_from_feed
 
 		my %episodes = %feeds_in_file{$feed_name};
 		my @episodes_vector = values(%episodes);
-		my $episodes_hash_ref = $episodes_vector[0];
+		my $episodes_hash_ref = $episodes_vector[0]
+                    or die "No episodes from the feed you are looking for.\n";
 		my %episodes_hash = %{$episodes_hash_ref};
 		my @final_vector = values(%episodes_hash);
 

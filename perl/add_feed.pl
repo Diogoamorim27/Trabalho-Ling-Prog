@@ -110,12 +110,10 @@ sub add_feed
 	system($cli_command); #changes temporary *.xml file to correct name and moves it to feed directory;
 
 	append_feed(%feed_data);
-
-	return %feed_data;
 }
 
 
 #programa de teste
 #
 #
-add_feed("https://decrepitos.com/podcast/feed.xml", "decrepitos.xml");
+#add_feed("https://decrepitos.com/podcast/feed.xml", "decrepitos.xml");

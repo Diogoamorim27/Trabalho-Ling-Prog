@@ -1,10 +1,11 @@
 use strict;
 use warnings;
-use Text::Unaccent::PurePerl qw(unac_string);
 use JSON;
 use File::Slurper;
 use Data::Dumper; #debugging
-use Unicode::Normalize
+use utf8;
+use open qw(:std :encoding(UTF-8));
+use Encode qw( encode_utf8 );
 
 require "./perl/get_episodes.pl";
 require "./perl/normalize_string.pl";
@@ -19,7 +20,7 @@ sub delete_episode
 
 	my $file_contents = File::Slurper::read_text($episodes_json_path);
 
-	$file_contents = unac_string("UTF-8", encode_utf8($file_contents));
+        $file_contents = encode_utf8($file_contents);
 
 	my %feeds_in_file;
 
@@ -41,7 +42,7 @@ sub delete_episode
 		my %episodes_from_feed = %{$episodes_vector[0]};
 		print Dumper (%episodes_from_feed);
 		print "\n ------------ \n";
-		delete %episodes_from_feed{$episode_name};
+		delete $episodes_from_feed{$episode_name};
 		#print Dumper (%episodes_from_feed) ;
 		$feeds_in_file{$feed_name} = \%episodes_from_feed;
 		#print Dumper (%feeds_in_file);

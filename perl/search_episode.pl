@@ -3,6 +3,7 @@ use warnings;
 use utf8;
 use open qw(:std :encoding(UTF-8));
 use Unicode::Collate;
+use Encode qw( decode_utf8 );
 
 require "./perl/get_episodes.pl";
 
@@ -10,7 +11,6 @@ require "./perl/get_episodes.pl";
 sub search_episodes{
     my $feed_name = $_[0];
     my @search_entry = split(/ /, $_[1]);     #get each word separated by a space from the search entry and stores it as an individual string in an array
-
     my @episodes = get_episodes($feed_name);
     
     my @results;
@@ -46,8 +46,8 @@ sub search_episodes{
 }
 
 #test program
-my @result = search_episodes($ARGV[0], "capricho");
+#my @result = search_episodes($ARGV[0], decode_utf8($ARGV[1]));
 
-for my $i (0 .. $#result){
-    print "$result[$i]{title}\n";
-}
+#for my $i (0 .. $#result){
+#    print "$result[$i]{title}\n";
+#}

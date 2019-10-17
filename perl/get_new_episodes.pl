@@ -1,7 +1,11 @@
 use strict;
 use warnings;
+use utf8;
+use open qw(:std :encoding(UTF-8));
+use Encode qw( encode_utf8 );
 
 require "./perl/normalize_string.pl";
+require "./perl/get_downloaded_episodes.pl";
 
 sub get_date{
     my $pubDate = $_[0];
@@ -47,7 +51,6 @@ sub get_most_recent{
             }
             elsif (($date[$i]{year} == $date[$most_recent]{year}) and
                    ($date[$i]{month} > $date[$most_recent]{month})){
-                print "ok2\n";
                 $most_recent = $i;
             }
             elsif (($date[$i]{year} == $date[$most_recent]{year}) and 
@@ -82,72 +85,58 @@ sub get_most_recent{
 }
 
 sub get_new_episodes{
-	my $feed_name = $_[0];      #string with the title of the chosen feed
-        my %most_recent_downloaded = %{$_[1]};  #hash with data from most recent downloaded episode
+    my $feed_name = $_[0];      #string with the title of the chosen feed
+    my $episodes_json_path = $_[1];
 
-	$feed_name = normalize_string($feed_name);
+    my @downloaded_episodes = @{get_downloaded_episodes_from_feed($feed_name, $episodes_json_path)};
 
-	my $file_path = ".feeds/".$feed_name."/".$feed_name.".xml";
+    #hash with data from most recent downloaded episode
+    my %most_recent_downloaded = %{get_most_recent(\@downloaded_episodes)};
 
-	open (my $fh, "<", $file_path)
-		or die "Can't open $file_path: $!\n";
+    $feed_name = normalize_string($feed_name);
 
-	my $feed = "";
+    my $file_path = ".feeds/".$feed_name."/".$feed_name.".xml";
 
-	while (my $reader = <$fh>){
-		$feed = $feed.$reader;
-	}
+    open (my $fh, "<", $file_path)
+            or die "Can't open $file_path: $!\n";
 
-	my @episodes;
+    my $feed = "";
 
-	(my @episodes_data_raw) = $feed =~ /<item>(.*?)<\/item>/gs
-		or die "No episode on feed\n";
+    while (my $reader = <$fh>){
+            $feed = $feed.$reader;
+    }
 
-	LOOP: foreach my $episode (@episodes_data_raw){
-		my %episode_data;
-		($episode_data{title}) = $episode =~ /<title>(.*?)<\/title>/;
-		($episode_data{date}) = $episode =~ /<pubDate>(.*?)<\/pubDate>/;
-		($episode_data{url}) = $episode =~ /<enclosure(.*?)\/>/;
-		($episode_data{url}) = $episode_data{url} =~ /url="(.*?)"/;
+    my @episodes;
 
-		foreach my $key (keys %episode_data){
-			if ($episode_data{$key} =~ /\Q<![CDATA[\E/){
-				($episode_data{$key}) = $episode_data{$key} =~ /\Q<![CDATA[\E(.*)\Q]]>\E/;
-			}
-		}
-                last LOOP if ($episode_data{title} eq $most_recent_downloaded{title}); #stops if finds most recent downloaded episode
+    (my @episodes_data_raw) = $feed =~ /<item>(.*?)<\/item>/gs
+            or die "No episode on feed\n";
 
-		unshift @episodes, \%episode_data;
-	}
+    LOOP: foreach my $episode (@episodes_data_raw){
+            my %episode_data;
+            ($episode_data{title}) = $episode =~ /<title>(.*?)<\/title>/;
+            ($episode_data{date}) = $episode =~ /<pubDate>(.*?)<\/pubDate>/;
+            ($episode_data{url}) = $episode =~ /<enclosure(.*?)\/>/;
+            ($episode_data{url}) = $episode_data{url} =~ /url="(.*?)"/;
 
-	close($fh)
-		|| warn "$file_path - close failed: $!\n";
+            foreach my $key (keys %episode_data){
+                    if ($episode_data{$key} =~ /\Q<![CDATA[\E/){
+                            ($episode_data{$key}) = $episode_data{$key} =~ /\Q<![CDATA[\E(.*)\Q]]>\E/;
+                    }
+            }
+            last LOOP if ($episode_data{title} eq $most_recent_downloaded{title}); #stops if finds most recent downloaded episode
 
-	return \@episodes;
+            unshift @episodes, \%episode_data;
+    }
+
+    close($fh)
+            || warn "$file_path - close failed: $!\n";
+
+    return \@episodes;
 }
 
 #programa de teste
 
-#my %episode1;
-#$episode1{title} = "Decrépitos 230 - Respondendo Testes da Capricho 5";
-#$episode1{url} = "https://media.blubrry.com/decrepitos/decrepitos.com/podcast/2019/decrepitos_230_capricho_5.mp3";
-#$episode1{date} = "Tue, 05 Mar 2018 18:00:00 -0200";
-
-#my %episode2;
-#$episode2{title} = "345 Teaser - Conspiracy at the Highest Level";
-#$episode2{url} = "https://media.blubrry.com/decrepitos/decrepitos.com/podcast/2019/decrepitos_230_capricho_5.mp3";
-#$episode2{date} = "Mon, 05 Mar 2019 18:10:00 -0300";
-
-#my @episodes;
-#unshift @episodes, \%episode1;
-#unshift @episodes, \%episode2;
-
-#print "$episodes[1]{title}\n";
-
-#my %most_recent = %{get_most_recent(\@episodes)};
-#print "mais recente: $most_recent{title}\n";
-
-#my @new_eps = @{get_new_episodes("Chapo Trap House", \%most_recent)};
+#my @new_eps = @{get_new_episodes("Decrépitos", "episodes.json")};
 
 #for my $i (0 .. $#new_eps)
 #{
