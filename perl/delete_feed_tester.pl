@@ -9,6 +9,6 @@ use open qw(:std :encoding(UTF-8));
 
 require "./perl/delete_feed.pl";
 
-delete_feed ("Decrépitos", "feeds.json");
+delete_feed ("Decrépitos", "episodes.json", "feeds.json");
 
 #print Dumper(%{$episodes});
