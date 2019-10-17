@@ -1,1 +1,16 @@
-{}
+{
+   "Waypoint Radio" : {
+      "Episode 271: The Embargo Zone" : {
+         "date" : "Mon, 16 Oct 2020 17:30:00 -0300",
+         "title" : "Episode 271: The Embargo Zone",
+         "url" : "https://media.acast.com/vicegamingsnewpodcast/episode271-theembargozone/media.mp3"
+      }
+   },
+   "Decrépitos" : {
+      "Decrépitos 232 - Leiturão da Massa 2" : {
+         "title" : "Decrépitos 232 - Leiturão da Massa 2",
+         "url" : "https://media.blubrry.com/decrepitos/decrepitos.com/podcast/2019/decrepitos_232_leiturao02.mp3",
+         "date" : "Mon, 16 Oct 2020 17:30:00 -0300"
+      }
+   }
+}

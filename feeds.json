@@ -1,1 +1,12 @@
-[]
+[
+   {
+      "language" : "en",
+      "url" : "https://rss.acast.com/vicegamingsnewpodcast",
+      "title" : "Waypoint Radio"
+   },
+   {
+      "language" : "pt-BR",
+      "url" : "https://decrepitos.com/podcast/feed.xml",
+      "title" : "Decrépitos"
+   }
+]
