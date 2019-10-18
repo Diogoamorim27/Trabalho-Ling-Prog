@@ -218,7 +218,7 @@ sub delete_episode
 		my %episodes = %feeds_in_file{$feed_name};
 		my @episodes_vector = values(%episodes);
 		my %episodes_from_feed = %{$episodes_vector[0]};
-		print Dumper (%episodes_from_feed);
+		#print Dumper (%episodes_from_feed);
 		print "\n ------------ \n";
 		delete $episodes_from_feed{$episode_name};
 		#print Dumper (%episodes_from_feed) ;
@@ -264,11 +264,11 @@ sub delete_feed
 
 		my %feeds_in_file = %{decode_json($file_contents)};
 
-		print Dumper (keys(%feeds_in_file));
+	#	print Dumper (keys(%feeds_in_file));
 		print "\n ------------ \n";
 		delete $feeds_in_file{$feed_name};
 	
-		print Dumper (keys(%feeds_in_file));
+	#	print Dumper (keys(%feeds_in_file));
 
 		open (my $fh, '>', $episodes_json_path)
 			or die "Can't open < $episodes_json_path: $! \n ";
