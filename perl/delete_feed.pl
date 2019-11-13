@@ -55,30 +55,39 @@ sub delete_feed
 
 	}
 
+	# ----- daqui pra cima funciona ---- #
+
 	$file_contents = File::Slurper::read_text($feeds_json_path);
 
 	$file_contents = encode_utf8($file_contents);
 
 	if ($file_contents eq ""){return ""};
 
-	eval {%feeds_in_file = %{decode_json($file_contents)}}; 
+	eval {my @feeds_in_file = @{decode_json($file_contents)}}; 
 
 	if (!($@ eq "")) {
 		return $@;
 	} else {
 
-		my %feeds_in_file = %{decode_json($file_contents)};
+		my @feeds_in_file = @{decode_json($file_contents)};
 
-		print Dumper (keys(%feeds_in_file));
 		print "\n ------------ \n";
-		delete $feeds_in_file{$feed_name};
-	
-		print Dumper (keys(%feeds_in_file));
+		
+		my $i;
 
+		my @new_feeds_in_file;
+
+		for $i (@feeds_in_file) {
+			if (!($feed_name eq ${$i}{"title"})) {
+				push (@new_feeds_in_file, $i); 
+			}
+		}
+	
+	
 		open (my $fh, '>', $feeds_json_path)
 			or die "Can't open < $feeds_json_path: $! \n ";
 
-		my $new_file_content = to_json \%feeds_in_file, {pretty => 1};
+		my $new_file_content = to_json \@new_feeds_in_file, {pretty => 1};
 
 		print $fh $new_file_content;
 
