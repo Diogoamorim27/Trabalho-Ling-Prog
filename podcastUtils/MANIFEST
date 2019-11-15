@@ -1,10 +1,6 @@
 Changes
 Makefile.PL
 MANIFEST
-podcastUtils.xs
-ppport.h
 README
 t/podcastUtils.t
-fallback/const-c.inc
-fallback/const-xs.inc
 lib/podcastUtils.pm
