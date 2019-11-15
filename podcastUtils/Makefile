@@ -15,9 +15,6 @@
 #     AUTHOR => [q[diogo <diogo@nonet>]]
 #     BUILD_REQUIRES => {  }
 #     CONFIGURE_REQUIRES => {  }
-#     DEFINE => q[]
-#     INC => q[-I.]
-#     LIBS => [q[]]
 #     NAME => q[podcastUtils]
 #     PREREQ_PM => {  }
 #     TEST_REQUIRES => {  }
@@ -153,18 +150,16 @@ BASEEXT = podcastUtils
 PARENT_NAME = 
 DLBASE = $(BASEEXT)
 VERSION_FROM = lib/podcastUtils.pm
-INC = -I.
-DEFINE = 
-OBJECT = $(BASEEXT)$(OBJ_EXT)
+OBJECT = 
 LDFROM = $(OBJECT)
 LINKTYPE = dynamic
 BOOTDEP = 
 
 # Handy lists of source code files:
-XS_FILES = podcastUtils.xs
-C_FILES  = podcastUtils.c
-O_FILES  = podcastUtils.o
-H_FILES  = ppport.h
+XS_FILES = 
+C_FILES  = 
+O_FILES  = 
+H_FILES  = 
 MAN1PODS = 
 MAN3PODS = lib/podcastUtils.pm
 
@@ -178,9 +173,9 @@ INST_ARCHLIBDIR  = $(INST_ARCHLIB)
 INST_AUTODIR     = $(INST_LIB)/auto/$(FULLEXT)
 INST_ARCHAUTODIR = $(INST_ARCHLIB)/auto/$(FULLEXT)
 
-INST_STATIC      = $(INST_ARCHAUTODIR)/$(BASEEXT)$(LIB_EXT)
-INST_DYNAMIC     = $(INST_ARCHAUTODIR)/$(DLBASE).$(DLEXT)
-INST_BOOT        = $(INST_ARCHAUTODIR)/$(BASEEXT).bs
+INST_STATIC      = 
+INST_DYNAMIC     = 
+INST_BOOT        = 
 
 # Extra linker info
 EXPORT_LIST        = 
@@ -204,14 +199,6 @@ AUTOSPLITFILE = $(ABSPERLRUN)  -e 'use AutoSplit;  autosplit($$$$ARGV[0], $$$$AR
 
 
 # --- MakeMaker tool_xsubpp section:
-
-XSUBPPDIR = /usr/share/perl5/core_perl/ExtUtils
-XSUBPP = "$(XSUBPPDIR)$(DFSEP)xsubpp"
-XSUBPPRUN = $(PERLRUN) $(XSUBPP)
-XSPROTOARG = 
-XSUBPPDEPS = /usr/share/perl5/core_perl/ExtUtils/typemap /usr/share/perl5/core_perl/ExtUtils$(DFSEP)xsubpp
-XSUBPPARGS = -typemap '/usr/share/perl5/core_perl/ExtUtils/typemap'
-XSUBPP_EXTRA_ARGS =
 
 
 # --- MakeMaker tools_other section:
@@ -278,24 +265,12 @@ DISTVNAME = podcastUtils-0.01
 
 # --- MakeMaker cflags section:
 
-CCFLAGS = -D_REENTRANT -D_GNU_SOURCE -fwrapv -fno-strict-aliasing -pipe -fstack-protector-strong -I/usr/local/include -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_FORTIFY_SOURCE=2
-OPTIMIZE = -march=x86-64 -mtune=generic -O2 -pipe -fstack-protector-strong -fno-plt
-PERLTYPE = 
-MPOLLUTE = 
-
 
 # --- MakeMaker const_loadlibs section:
 
-# podcastUtils might depend on some other libraries:
-# See ExtUtils::Liblist for details
-#
-
 
 # --- MakeMaker const_cccmd section:
-CCCMD = $(CC) -c $(PASTHRU_INC) $(INC) \
-	$(CCFLAGS) $(OPTIMIZE) \
-	$(PERLTYPE) $(MPOLLUTE) $(DEFINE_VERSION) \
-	$(XS_DEFINE_VERSION)
+
 
 # --- MakeMaker post_constants section:
 
@@ -304,11 +279,10 @@ CCCMD = $(CC) -c $(PASTHRU_INC) $(INC) \
 
 PASTHRU = LIBPERL_A="$(LIBPERL_A)"\
 	LINKTYPE="$(LINKTYPE)"\
-	OPTIMIZE="$(OPTIMIZE)"\
 	PREFIX="$(PREFIX)"\
 	INSTALL_BASE="$(INSTALL_BASE)"\
-	PASTHRU_DEFINE=' $(PASTHRU_DEFINE)'\
-	PASTHRU_INC='-I. $(PASTHRU_INC)'
+	PASTHRU_DEFINE='$(DEFINE) $(PASTHRU_DEFINE)'\
+	PASTHRU_INC='$(INC) $(PASTHRU_INC)'
 
 
 # --- MakeMaker special_targets section:
@@ -320,43 +294,11 @@ PASTHRU = LIBPERL_A="$(LIBPERL_A)"\
 
 # --- MakeMaker c_o section:
 
-.c.i:
-	cc  -E -c $(PASTHRU_INC) $(INC) \
-	$(CCFLAGS) $(OPTIMIZE) \
-	$(PERLTYPE) $(MPOLLUTE) $(DEFINE_VERSION) \
-	$(XS_DEFINE_VERSION) $(CCCDLFLAGS) "-I$(PERL_INC)" $(PASTHRU_DEFINE) $(DEFINE) $*.c > $*.i
-
-.c.s :
-	$(CCCMD) -S $(CCCDLFLAGS) "-I$(PERL_INC)" $(PASTHRU_DEFINE) $(DEFINE) $*.c 
-
-.c$(OBJ_EXT) :
-	$(CCCMD) $(CCCDLFLAGS) "-I$(PERL_INC)" $(PASTHRU_DEFINE) $(DEFINE) $*.c
-
-.cpp$(OBJ_EXT) :
-	$(CCCMD) $(CCCDLFLAGS) "-I$(PERL_INC)" $(PASTHRU_DEFINE) $(DEFINE) $*.cpp
-
-.cxx$(OBJ_EXT) :
-	$(CCCMD) $(CCCDLFLAGS) "-I$(PERL_INC)" $(PASTHRU_DEFINE) $(DEFINE) $*.cxx
-
-.cc$(OBJ_EXT) :
-	$(CCCMD) $(CCCDLFLAGS) "-I$(PERL_INC)" $(PASTHRU_DEFINE) $(DEFINE) $*.cc
-
-.C$(OBJ_EXT) :
-	$(CCCMD) $(CCCDLFLAGS) "-I$(PERL_INC)" $(PASTHRU_DEFINE) $(DEFINE) $*.C
-
 
 # --- MakeMaker xs_c section:
 
-.xs.c:
-	$(XSUBPPRUN) $(XSPROTOARG) $(XSUBPPARGS) $(XSUBPP_EXTRA_ARGS) $*.xs > $*.xsc
-	$(MV) $*.xsc $*.c
-
 
 # --- MakeMaker xs_o section:
-.xs$(OBJ_EXT) :
-	$(XSUBPPRUN) $(XSPROTOARG) $(XSUBPPARGS) $*.xs > $*.xsc
-	$(MV) $*.xsc $*.c
-	$(CCCMD) $(CCCDLFLAGS) "-I$(PERL_INC)" $(PASTHRU_DEFINE) $(DEFINE) $*.c 
 
 
 # --- MakeMaker top_targets section:
@@ -373,8 +315,6 @@ subdirs :: $(MYEXTLIB)
 
 config :: $(FIRST_MAKEFILE) blibdirs
 	$(NOECHO) $(NOOP)
-
-$(O_FILES) : $(H_FILES)
 
 help :
 	perldoc ExtUtils::MakeMaker
@@ -440,22 +380,8 @@ linkext :: dynamic
 
 
 # --- MakeMaker dynamic_bs section:
-BOOTSTRAP = $(BASEEXT).bs
 
-# As Mkbootstrap might not write a file (if none is required)
-# we use touch to prevent make continually trying to remake it.
-# The DynaLoader only reads a non-empty file.
-$(BASEEXT).bs : $(FIRST_MAKEFILE) $(BOOTDEP)
-	$(NOECHO) $(ECHO) "Running Mkbootstrap for $(BASEEXT) ($(BSLOADLIBS))"
-	$(NOECHO) $(PERLRUN) \
-		"-MExtUtils::Mkbootstrap" \
-		-e "Mkbootstrap('$(BASEEXT)','$(BSLOADLIBS)');"
-	$(NOECHO) $(TOUCH) "$(BASEEXT).bs"
-	$(CHMOD) $(PERM_RW) "$(BASEEXT).bs"
-
-$(INST_ARCHAUTODIR)/$(BASEEXT).bs : $(BASEEXT).bs $(INST_ARCHAUTODIR)$(DFSEP).exists
-	$(NOECHO) $(RM_RF) $(INST_ARCHAUTODIR)/$(BASEEXT).bs
-	- $(CP_NONEMPTY) $(BASEEXT).bs $(INST_ARCHAUTODIR)/$(BASEEXT).bs $(PERM_RW)
+BOOTSTRAP =
 
 
 # --- MakeMaker dynamic section:
@@ -465,19 +391,6 @@ dynamic :: $(FIRST_MAKEFILE) config $(INST_BOOT) $(INST_DYNAMIC)
 
 
 # --- MakeMaker dynamic_lib section:
-# This section creates the dynamically loadable objects from relevant
-# objects and possibly $(MYEXTLIB).
-ARMAYBE = :
-OTHERLDFLAGS = 
-INST_DYNAMIC_DEP = 
-INST_DYNAMIC_FIX = 
-
-$(INST_DYNAMIC) : $(OBJECT) $(MYEXTLIB) $(INST_ARCHAUTODIR)$(DFSEP).exists $(EXPORT_LIST) $(PERL_ARCHIVEDEP) $(PERL_ARCHIVE_AFTER) $(INST_DYNAMIC_DEP) 
-	$(RM_F) $@
-	$(LD)  $(LDDLFLAGS)  $(LDFROM) $(OTHERLDFLAGS) -o $@ $(MYEXTLIB) \
-	  $(PERL_ARCHIVE) $(LDLOADLIBS) $(PERL_ARCHIVE_AFTER) $(EXPORT_LIST) \
-	  $(INST_DYNAMIC_FIX)
-	$(CHMOD) $(PERM_RWX) $@
 
 
 # --- MakeMaker static section:
@@ -489,12 +402,6 @@ static :: $(FIRST_MAKEFILE) $(INST_STATIC)
 
 
 # --- MakeMaker static_lib section:
-$(INST_STATIC): $(OBJECT) $(MYEXTLIB) $(INST_ARCHAUTODIR)$(DFSEP).exists
-	$(RM_F) "$@"
-	$(FULL_AR) $(AR_STATIC_ARGS) "$@" $(OBJECT)
-	$(RANLIB) "$@"
-	$(CHMOD) $(PERM_RWX) $@
-	$(NOECHO) $(ECHO) "$(EXTRALIBS)" > $(INST_ARCHAUTODIR)$(DFSEP)extralibs.ld
 
 
 # --- MakeMaker manifypods section:
@@ -547,11 +454,7 @@ clean :: clean_subdirs
 	  mon.out perl \
 	  perl$(EXE_EXT) perl.exe \
 	  perlmain.c pm_to_blib \
-	  pm_to_blib.ts podcastUtils.base \
-	  podcastUtils.bs podcastUtils.bso \
-	  podcastUtils.c podcastUtils.def \
-	  podcastUtils.exp podcastUtils.o \
-	  podcastUtils_def.old so_locations \
+	  pm_to_blib.ts so_locations \
 	  tmon.out 
 	- $(RM_RF) \
 	  blib 
@@ -569,8 +472,7 @@ realclean_subdirs : clean
 # Delete temporary files (via clean) and also delete dist files
 realclean purge :: realclean_subdirs
 	- $(RM_F) \
-	  $(FIRST_MAKEFILE) $(MAKEFILE_OLD) \
-	  $(OBJECT) 
+	  $(FIRST_MAKEFILE) $(MAKEFILE_OLD) 
 	- $(RM_RF) \
 	  $(DISTVNAME) 
 
@@ -875,97 +777,9 @@ FORCE :
 
 
 # --- MakeMaker perldepend section:
-PERL_HDRS = \
-        $(PERL_INCDEP)/EXTERN.h            \
-        $(PERL_INCDEP)/INTERN.h            \
-        $(PERL_INCDEP)/XSUB.h            \
-        $(PERL_INCDEP)/av.h            \
-        $(PERL_INCDEP)/bitcount.h            \
-        $(PERL_INCDEP)/charclass_invlists.h            \
-        $(PERL_INCDEP)/config.h            \
-        $(PERL_INCDEP)/cop.h            \
-        $(PERL_INCDEP)/cv.h            \
-        $(PERL_INCDEP)/dosish.h            \
-        $(PERL_INCDEP)/dquote_inline.h            \
-        $(PERL_INCDEP)/ebcdic_tables.h            \
-        $(PERL_INCDEP)/embed.h            \
-        $(PERL_INCDEP)/embedvar.h            \
-        $(PERL_INCDEP)/fakesdio.h            \
-        $(PERL_INCDEP)/feature.h            \
-        $(PERL_INCDEP)/form.h            \
-        $(PERL_INCDEP)/git_version.h            \
-        $(PERL_INCDEP)/gv.h            \
-        $(PERL_INCDEP)/handy.h            \
-        $(PERL_INCDEP)/hv.h            \
-        $(PERL_INCDEP)/hv_func.h            \
-        $(PERL_INCDEP)/hv_macro.h            \
-        $(PERL_INCDEP)/inline.h            \
-        $(PERL_INCDEP)/intrpvar.h            \
-        $(PERL_INCDEP)/invlist_inline.h            \
-        $(PERL_INCDEP)/iperlsys.h            \
-        $(PERL_INCDEP)/keywords.h            \
-        $(PERL_INCDEP)/l1_char_class_tab.h            \
-        $(PERL_INCDEP)/malloc_ctl.h            \
-        $(PERL_INCDEP)/metaconfig.h            \
-        $(PERL_INCDEP)/mg.h            \
-        $(PERL_INCDEP)/mg_data.h            \
-        $(PERL_INCDEP)/mg_raw.h            \
-        $(PERL_INCDEP)/mg_vtable.h            \
-        $(PERL_INCDEP)/mydtrace.h            \
-        $(PERL_INCDEP)/nostdio.h            \
-        $(PERL_INCDEP)/op.h            \
-        $(PERL_INCDEP)/op_reg_common.h            \
-        $(PERL_INCDEP)/opcode.h            \
-        $(PERL_INCDEP)/opnames.h            \
-        $(PERL_INCDEP)/overload.h            \
-        $(PERL_INCDEP)/pad.h            \
-        $(PERL_INCDEP)/parser.h            \
-        $(PERL_INCDEP)/patchlevel.h            \
-        $(PERL_INCDEP)/perl.h            \
-        $(PERL_INCDEP)/perl_inc_macro.h            \
-        $(PERL_INCDEP)/perl_langinfo.h            \
-        $(PERL_INCDEP)/perlapi.h            \
-        $(PERL_INCDEP)/perlio.h            \
-        $(PERL_INCDEP)/perliol.h            \
-        $(PERL_INCDEP)/perlsdio.h            \
-        $(PERL_INCDEP)/perlvars.h            \
-        $(PERL_INCDEP)/perly.h            \
-        $(PERL_INCDEP)/pp.h            \
-        $(PERL_INCDEP)/pp_proto.h            \
-        $(PERL_INCDEP)/proto.h            \
-        $(PERL_INCDEP)/reentr.h            \
-        $(PERL_INCDEP)/regcharclass.h            \
-        $(PERL_INCDEP)/regcomp.h            \
-        $(PERL_INCDEP)/regexp.h            \
-        $(PERL_INCDEP)/regnodes.h            \
-        $(PERL_INCDEP)/sbox32_hash.h            \
-        $(PERL_INCDEP)/scope.h            \
-        $(PERL_INCDEP)/stadtx_hash.h            \
-        $(PERL_INCDEP)/sv.h            \
-        $(PERL_INCDEP)/thread.h            \
-        $(PERL_INCDEP)/time64.h            \
-        $(PERL_INCDEP)/time64_config.h            \
-        $(PERL_INCDEP)/uconfig.h            \
-        $(PERL_INCDEP)/uni_keywords.h            \
-        $(PERL_INCDEP)/unicode_constants.h            \
-        $(PERL_INCDEP)/unixish.h            \
-        $(PERL_INCDEP)/utf8.h            \
-        $(PERL_INCDEP)/utfebcdic.h            \
-        $(PERL_INCDEP)/util.h            \
-        $(PERL_INCDEP)/uudmap.h            \
-        $(PERL_INCDEP)/vutil.h            \
-        $(PERL_INCDEP)/warnings.h            \
-        $(PERL_INCDEP)/zaphod32_hash.h            
-
-$(OBJECT) : $(PERL_HDRS)
-
-podcastUtils.c : $(XSUBPPDEPS)
 
 
 # --- MakeMaker makefile section:
-
-$(OBJECT) : $(FIRST_MAKEFILE)
-
 # We take a very conservative approach here, but it's worth it.
 # We move Makefile to Makefile.old here to avoid gnu make looping.
 $(FIRST_MAKEFILE) : Makefile.PL $(CONFIGDEP)
@@ -1027,11 +841,11 @@ testdb_dynamic :: dynamic pure_all
 
 subdirs-test_static :: static pure_all
 
-test_static :: subdirs-test_static $(MAP_TARGET)
-	PERL_DL_NONLAZY=1 "/home/diogo/Documents/GitHub/Trabalho-Ling-Prog/podcastUtils/$(MAP_TARGET)" $(MAP_PERLINC) "-MExtUtils::Command::MM" "-MTest::Harness" "-e" "undef *Test::Harness::Switches; test_harness($(TEST_VERBOSE), '$(INST_LIB)', '$(INST_ARCHLIB)')" $(TEST_FILES)
+test_static :: subdirs-test_static
+	PERL_DL_NONLAZY=1 $(FULLPERLRUN) "-MExtUtils::Command::MM" "-MTest::Harness" "-e" "undef *Test::Harness::Switches; test_harness($(TEST_VERBOSE), '$(INST_LIB)', '$(INST_ARCHLIB)')" $(TEST_FILES)
 
-testdb_static :: static pure_all $(MAP_TARGET)
-	PERL_DL_NONLAZY=1 "/home/diogo/Documents/GitHub/Trabalho-Ling-Prog/podcastUtils/$(MAP_TARGET)" $(MAP_PERLINC) "-I$(INST_LIB)" "-I$(INST_ARCHLIB)" $(TEST_FILE)
+testdb_static :: static pure_all
+	PERL_DL_NONLAZY=1 $(FULLPERLRUN) $(TESTDB_SW) "-I$(INST_LIB)" "-I$(INST_ARCHLIB)" $(TEST_FILE)
 
 
 
