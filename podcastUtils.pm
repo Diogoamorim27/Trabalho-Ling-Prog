@@ -142,8 +142,16 @@ sub append_feed
 	my %new_feed_hash = @_;
 
 	my @file_content_array = @{JSON->new->utf8->decode(encode_utf8($file_contents))};
+	
+	my $is_already_there = 0;
 
-	push @file_content_array, {%new_feed_hash};
+	foreach my $feed_hash_ref (@file_content_array) {
+		if (${$feed_hash_ref}{"title"} eq $new_feed_hash{"title"}) {
+	     		$is_already_there = 1;
+		}
+	}
+	
+	if (!$is_already_there) {push @file_content_array, {%new_feed_hash}};
 
 	my $new_file_content = to_json \@file_content_array, {pretty => 1} ;
 
@@ -152,6 +160,7 @@ sub append_feed
 	close ($fh)
 		|| warn "$feeds_file_path - close failed: $!\n";
 }
+
 
 
 sub add_feed

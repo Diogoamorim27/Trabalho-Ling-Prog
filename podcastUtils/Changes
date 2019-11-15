@@ -1,6 +1,6 @@
 Revision history for Perl extension podcastUtils.
 
-0.01  Fri Nov 15 16:15:16 2019
+0.01  Fri Nov 15 17:38:34 2019
 	- original version; created by h2xs 1.23 with options
-		-n podcastUtils
+		-X -n podcastUtils
 
