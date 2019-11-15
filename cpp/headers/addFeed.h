@@ -8,7 +8,7 @@
 
 using namespace std;
 
-void generate_random_string(string &, const int);
+void generateRandomString(string &, const int);
 
 void addFeed(string feedUrl);
 

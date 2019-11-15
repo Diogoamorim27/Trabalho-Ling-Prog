@@ -3,7 +3,11 @@
 
 using namespace std;
 
-Episode::Episode(string title, string date, string url, string feedTitle) : title (title), date (date), url (url) {}
+Episode::Episode(string feedTitle, string title, string date, string url) : feedTitle (feedTitle), title (title), date (date), url (url) {}
+
+string Episode::getFeedTitle() {
+    return feedTitle;
+}
 
 string Episode::getTitle() {
     return title;

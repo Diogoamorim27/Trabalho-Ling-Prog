@@ -8,12 +8,14 @@ using namespace std;
 
 class Episode {
     public:
-        Episode(string, string, string);
+        Episode(string, string, string, string);
+        string getFeedTitle();
         string getTitle();
         string getDate();
         string getUrl();
 
     private:
+        string feedTitle;
         string title;
         string date;
         string url;

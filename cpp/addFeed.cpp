@@ -2,12 +2,13 @@
 #include <fstream>
 #include <cpr/cpr.h>
 #include <string>
+#include <stdexcept>
 
 #include "headers/addFeed.h"
 
 using namespace std;
 
-void generate_random_string(string &str, const int len) {
+void generateRandomString(string &str, const int len){
     static const char alphanum[] =
         "0123456789"
         "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -22,22 +23,33 @@ void generate_random_string(string &str, const int len) {
 }
 
 void addFeed(string feedUrl) {
-    string tmp_file(TEMPORARY_FILE_NAME_LENGTH, ' ');
+    string tmpFile(TEMPORARY_FILE_NAME_LENGTH, ' ');
     ofstream file;
 
-    generate_random_string(tmp_file, TEMPORARY_FILE_NAME_LENGTH);
+    try {
+        generateRandomString(tmpFile, TEMPORARY_FILE_NAME_LENGTH);
+        try {
+            file.open(tmpFile);
+            cout << "Downloading feed..." << endl;
+            auto response = cpr::Get(cpr::Url{feedUrl});
+            file << response.text;
+            cout << "Download finished." << endl;
+            file.close();
 
-    file.open(tmp_file);
-    cout << "Downloading feed..." << endl;
-    auto response = cpr::Get(cpr::Url{feedUrl});
-    file << response.text;
-    cout << "Download finished." << endl;
-    file.close();
-
-   /* Perl:
-    *
-    * add_feed(feedUrl, tmp_file);
-    *
-    *
-    */ 
+           /* Perl:
+            *
+            * add_feed(feedUrl, tmpFile);
+            *
+            *
+            */ 
+        }
+        catch (const ofstream::failure &e) {
+            cerr << "Error creating file: " << e.what()
+                 << "\nUnable to add feed.\n";
+        }
+    }
+    catch (out_of_range &oor) {
+        cerr << "Out of Range Error: " << oor.what()
+             << "\nUnable to add feed.\n";
+    }
 }

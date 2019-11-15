@@ -8,6 +8,6 @@
 
 using namespace std;
 
-void downloadEpisode(Episode, string) {
+void downloadEpisode(Episode, string);
 
 #endif
