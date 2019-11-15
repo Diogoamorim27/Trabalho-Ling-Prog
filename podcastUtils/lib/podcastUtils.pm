@@ -34,20 +34,15 @@ our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 
 our @EXPORT = qw(
 	add_episode_to_json
-	parse_feed
-	append_feed
-	add_feed
-	delete_episode 
- 	delete_feed
-	generate_episode_file_path
-	get_downloaded_episodes_from_feed
-	get_episodes
-	get_feeds
-	get_date
-	get_most_recent
-	get_new_episodes
-	normalize_string
- 	search_episodes
+  add_feed
+  delete_episode 
+  delete_feed
+  generate_episode_file_path
+  get_downloaded_episodes_from_feed
+  get_episodes
+  get_feeds
+  get_new_episodes
+  search_episodes
 );
 
 our $VERSION = '0.01';
@@ -142,16 +137,8 @@ sub append_feed
 	my %new_feed_hash = @_;
 
 	my @file_content_array = @{JSON->new->utf8->decode(encode_utf8($file_contents))};
-	
-	my $is_already_there = 0;
 
-	foreach my $feed_hash_ref (@file_content_array) {
-		if (${$feed_hash_ref}{"title"} eq $new_feed_hash{"title"}) {
-	     		$is_already_there = 1;
-		}
-	}
-	
-	if (!$is_already_there) {push @file_content_array, {%new_feed_hash}};
+	push @file_content_array, {%new_feed_hash};
 
 	my $new_file_content = to_json \@file_content_array, {pretty => 1} ;
 
@@ -160,7 +147,6 @@ sub append_feed
 	close ($fh)
 		|| warn "$feeds_file_path - close failed: $!\n";
 }
-
 
 
 sub add_feed
