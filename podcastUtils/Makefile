@@ -12,14 +12,14 @@
 #   MakeMaker Parameters:
 
 #     ABSTRACT_FROM => q[lib/podcastUtils.pm]
-#     AUTHOR => [q[diogo <diogo@nonet>]]
+#     AUTHOR => [q[diogo <diogoamorim27@poli.ufrj.br>]]
 #     BUILD_REQUIRES => {  }
 #     CONFIGURE_REQUIRES => {  }
 #     DEFINE => q[]
 #     INC => q[-I.]
 #     LIBS => [q[]]
 #     NAME => q[podcastUtils]
-#     PREREQ_PM => {  }
+#     PREREQ_PM => { Data::Dumper=>q[2.174], Encode=>q[3.01], File::Slurper=>q[0.012], JSON=>q[4.02], Text::Unaccent::PurePerl=>q[0.05], open=>q[1.11], utf8=>q[1.22] }
 #     TEST_REQUIRES => {  }
 #     VERSION_FROM => q[lib/podcastUtils.pm]
 
@@ -581,7 +581,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '---' > META_new.yml
 	$(NOECHO) $(ECHO) 'abstract: '\''Perl extension for blah blah blah'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) 'author:' >> META_new.yml
-	$(NOECHO) $(ECHO) '  - '\''diogo <diogo@nonet>'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) '  - '\''diogo <diogoamorim27@poli.ufrj.br>'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) 'build_requires:' >> META_new.yml
 	$(NOECHO) $(ECHO) '  ExtUtils::MakeMaker: '\''0'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) 'configure_requires:' >> META_new.yml
@@ -597,7 +597,14 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '  directory:' >> META_new.yml
 	$(NOECHO) $(ECHO) '    - t' >> META_new.yml
 	$(NOECHO) $(ECHO) '    - inc' >> META_new.yml
-	$(NOECHO) $(ECHO) 'requires: {}' >> META_new.yml
+	$(NOECHO) $(ECHO) 'requires:' >> META_new.yml
+	$(NOECHO) $(ECHO) '  Data::Dumper: '\''2.174'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) '  Encode: '\''3.01'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) '  File::Slurper: '\''0.012'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) '  JSON: '\''4.02'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) '  Text::Unaccent::PurePerl: '\''0.05'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) '  open: '\''1.11'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) '  utf8: '\''1.22'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) 'version: '\''0.01'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) 'x_serialization_backend: '\''CPAN::Meta::YAML version 0.018'\''' >> META_new.yml
 	-$(NOECHO) $(MV) META_new.yml $(DISTVNAME)/META.yml
@@ -605,7 +612,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '{' > META_new.json
 	$(NOECHO) $(ECHO) '   "abstract" : "Perl extension for blah blah blah",' >> META_new.json
 	$(NOECHO) $(ECHO) '   "author" : [' >> META_new.json
-	$(NOECHO) $(ECHO) '      "diogo <diogo@nonet>"' >> META_new.json
+	$(NOECHO) $(ECHO) '      "diogo <diogoamorim27@poli.ufrj.br>"' >> META_new.json
 	$(NOECHO) $(ECHO) '   ],' >> META_new.json
 	$(NOECHO) $(ECHO) '   "dynamic_config" : 1,' >> META_new.json
 	$(NOECHO) $(ECHO) '   "generated_by" : "ExtUtils::MakeMaker version 7.34, CPAN::Meta::Converter version 2.150010",' >> META_new.json
@@ -635,7 +642,15 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '         }' >> META_new.json
 	$(NOECHO) $(ECHO) '      },' >> META_new.json
 	$(NOECHO) $(ECHO) '      "runtime" : {' >> META_new.json
-	$(NOECHO) $(ECHO) '         "requires" : {}' >> META_new.json
+	$(NOECHO) $(ECHO) '         "requires" : {' >> META_new.json
+	$(NOECHO) $(ECHO) '            "Data::Dumper" : "2.174",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "Encode" : "3.01",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "File::Slurper" : "0.012",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "JSON" : "4.02",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "Text::Unaccent::PurePerl" : "0.05",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "open" : "1.11",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "utf8" : "1.22"' >> META_new.json
+	$(NOECHO) $(ECHO) '         }' >> META_new.json
 	$(NOECHO) $(ECHO) '      }' >> META_new.json
 	$(NOECHO) $(ECHO) '   },' >> META_new.json
 	$(NOECHO) $(ECHO) '   "release_status" : "stable",' >> META_new.json
@@ -1040,8 +1055,15 @@ testdb_static :: static pure_all $(MAP_TARGET)
 ppd :
 	$(NOECHO) $(ECHO) '<SOFTPKG NAME="podcastUtils" VERSION="0.01">' > podcastUtils.ppd
 	$(NOECHO) $(ECHO) '    <ABSTRACT>Perl extension for blah blah blah</ABSTRACT>' >> podcastUtils.ppd
-	$(NOECHO) $(ECHO) '    <AUTHOR>diogo &lt;diogo@nonet&gt;</AUTHOR>' >> podcastUtils.ppd
+	$(NOECHO) $(ECHO) '    <AUTHOR>diogo &lt;diogoamorim27@poli.ufrj.br&gt;</AUTHOR>' >> podcastUtils.ppd
 	$(NOECHO) $(ECHO) '    <IMPLEMENTATION>' >> podcastUtils.ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Data::Dumper" VERSION="2.174" />' >> podcastUtils.ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Encode::" VERSION="3.01" />' >> podcastUtils.ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="File::Slurper" VERSION="0.012" />' >> podcastUtils.ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="JSON::" VERSION="4.02" />' >> podcastUtils.ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Text::Unaccent::PurePerl" VERSION="0.05" />' >> podcastUtils.ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="open::" VERSION="1.11" />' >> podcastUtils.ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="utf8::" VERSION="1.22" />' >> podcastUtils.ppd
 	$(NOECHO) $(ECHO) '        <ARCHITECTURE NAME="x86_64-linux-thread-multi-5.30" />' >> podcastUtils.ppd
 	$(NOECHO) $(ECHO) '        <CODEBASE HREF="" />' >> podcastUtils.ppd
 	$(NOECHO) $(ECHO) '    </IMPLEMENTATION>' >> podcastUtils.ppd
