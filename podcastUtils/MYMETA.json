@@ -1,7 +1,7 @@
 {
    "abstract" : "Perl extension for blah blah blah",
    "author" : [
-      "diogo <diogoamorim27@poli.ufrj.br>"
+      "diogo <diogo@nonet>"
    ],
    "dynamic_config" : 0,
    "generated_by" : "ExtUtils::MakeMaker version 7.34, CPAN::Meta::Converter version 2.150010",
@@ -31,15 +31,7 @@
          }
       },
       "runtime" : {
-         "requires" : {
-            "Data::Dumper" : "2.174",
-            "Encode" : "3.01",
-            "File::Slurper" : "0.012",
-            "JSON" : "4.02",
-            "Text::Unaccent::PurePerl" : "0.05",
-            "open" : "1.11",
-            "utf8" : "1.22"
-         }
+         "requires" : {}
       }
    },
    "release_status" : "stable",

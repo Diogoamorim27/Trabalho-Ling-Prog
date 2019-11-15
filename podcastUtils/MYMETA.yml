@@ -1,7 +1,7 @@
 ---
 abstract: 'Perl extension for blah blah blah'
 author:
-  - 'diogo <diogoamorim27@poli.ufrj.br>'
+  - 'diogo <diogo@nonet>'
 build_requires:
   ExtUtils::MakeMaker: '0'
 configure_requires:
@@ -17,13 +17,6 @@ no_index:
   directory:
     - t
     - inc
-requires:
-  Data::Dumper: '2.174'
-  Encode: '3.01'
-  File::Slurper: '0.012'
-  JSON: '4.02'
-  Text::Unaccent::PurePerl: '0.05'
-  open: '1.11'
-  utf8: '1.22'
+requires: {}
 version: '0.01'
 x_serialization_backend: 'CPAN::Meta::YAML version 0.018'

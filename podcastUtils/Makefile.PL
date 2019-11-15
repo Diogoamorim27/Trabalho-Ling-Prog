@@ -5,18 +5,9 @@ use ExtUtils::MakeMaker;
 WriteMakefile(
     NAME              => 'podcastUtils',
     VERSION_FROM      => 'lib/podcastUtils.pm', # finds $VERSION, requires EU::MM from perl >= 5.5
-    PREREQ_PM         => {
-      'JSON' => 4.02,
-      'File::Slurper' => 0.012,
-      'Data::Dumper' => 2.174,
-      'utf8' => 1.22,
-      'open' => 1.11,
-      'Encode' => 3.01,
-      'Text::Unaccent::PurePerl' => 0.05
-
-    }, # e.g., Module::Name => 1.1
+    PREREQ_PM         => {}, # e.g., Module::Name => 1.1
     ABSTRACT_FROM     => 'lib/podcastUtils.pm', # retrieve abstract from module
-    AUTHOR            => 'diogo <diogoamorim27@poli.ufrj.br>',
+    AUTHOR            => 'diogo <diogo@nonet>',
     #LICENSE           => 'perl',
     #Value must be from legacy list of licenses here
     #http://search.cpan.org/perldoc?Module%3A%3ABuild%3A%3AAPI
