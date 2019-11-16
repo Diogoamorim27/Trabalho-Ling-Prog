@@ -2,6 +2,23 @@
 #include <string>
 #include "headers/perl_interface.h"
 
+static void xs_init (pTHX);
+EXTERN_C void boot_DynaLoader (pTHX_ CV* cv);
+EXTERN_C void boot_Socket (pTHX_ CV* cv);
+void
+xs_init(pTHX)
+{
+    	char *file = __FILE__;
+    /* DynaLoader is a special case */
+	dXSUB_SYS;
+	PERL_UNUSED_CONTEXT;
+   	
+	newXS("DynaLoader::boot_DynaLoader", boot_DynaLoader, file);
+    
+    //newXS("Socket::bootstrap", boot_Socket, file);
+}
+
+
 PerlInterface::PerlInterface(string script = "oi") {
 	int dummy_argc = 0;
 	char*** dummy_env = 0;
@@ -27,7 +44,7 @@ void PerlInterface::interpreter() {
 	char _MYARGV_NOTHING_NAME[] = "";
 	char *my_argv[] = {static_cast<char*>(_MYARGV_NOTHING_NAME), static_cast<char*>(_MYARGV_PERL_MODULE_NAME)};
 
-	perl_parse(my_perl, 0, 2, my_argv, NULL);
+	perl_parse(my_perl, xs_init, 2, my_argv, NULL);
 	perl_run(my_perl);
 }
 

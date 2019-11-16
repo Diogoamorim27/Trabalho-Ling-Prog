@@ -1,7 +1,12 @@
 [
    {
       "language" : "pt-BR",
-      "url" : "URL",
-      "title" : "Decrépitos"
+      "title" : "Decrépitos",
+      "url" : "URL"
+   },
+   {
+      "url" : "waypoint.com",
+      "title" : "Waypoint Radio",
+      "language" : "en"
    }
 ]
