@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 
-#include "headers/feed.h"
+#include "feed.h"
 
 using namespace std;
 

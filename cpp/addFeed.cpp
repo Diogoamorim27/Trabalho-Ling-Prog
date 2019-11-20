@@ -4,7 +4,7 @@
 #include <string>
 #include <stdexcept>
 
-#include "headers/addFeed.h"
+#include "addFeed.h"
 
 using namespace std;
 

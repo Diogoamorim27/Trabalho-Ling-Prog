@@ -1,6 +1,6 @@
 #include <stddef.h>
 #include <string>
-#include "headers/perl_interface.h"
+#include "perl_interface.h"
 
 static void xs_init (pTHX);
 EXTERN_C void boot_DynaLoader (pTHX_ CV* cv);

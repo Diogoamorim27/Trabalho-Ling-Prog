@@ -3,7 +3,7 @@
 #include <cpr/cpr.h>
 #include <string>
 
-#include "headers/downloadEpisode.h"
+#include "downloadEpisode.h"
 
 using namespace std;
 

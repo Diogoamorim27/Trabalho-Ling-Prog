@@ -3,8 +3,8 @@
 #include <cstdio>
 #include <system_error>
 
-#include "headers/deleteEpisode.h"
-#include "headers/episode.h"
+#include "deleteEpisode.h"
+#include "episode.h"
 
 using namespace std;
 

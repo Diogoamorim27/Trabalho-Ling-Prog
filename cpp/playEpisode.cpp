@@ -2,9 +2,9 @@
 #include <string>
 #include <cstdlib>
 
-#include "headers/playEpisode.h"
-#include "headers/episode.h"
-#include "headers/config.h"
+#include "playEpisode.h"
+#include "episode.h"
+#include "config.h"
 
 using namespace std;
 

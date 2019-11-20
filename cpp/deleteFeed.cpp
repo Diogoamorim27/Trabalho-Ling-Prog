@@ -2,8 +2,8 @@
 #include <string>
 #include <cstdlib>
 
-#include "headers/deleteFeed.h"
-#include "headers/feed.h"
+#include "deleteFeed.h"
+#include "feed.h"
 
 using namespace std;
 

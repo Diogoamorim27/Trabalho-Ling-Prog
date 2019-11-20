@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 
+#include "episode.h"
+
 using namespace std;
 
 Episode::Episode(string feedTitle, string title, string date, string url) : feedTitle (feedTitle), title (title), date (date), url (url) {}
