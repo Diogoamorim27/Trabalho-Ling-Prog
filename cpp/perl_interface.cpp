@@ -67,3 +67,44 @@ void PerlInterface::add_feed(string url, string feed_xml) {
 	FREETMPS;
 	LEAVE;
 }
+
+HV** PerlInterface::get_episodes(string feed_title) {
+	dSP;
+
+	int count;
+	HV** episodes;
+
+	ENTER;
+	SAVETMPS;
+	PUSHMARK(SP);
+
+	XPUSHs(sv_2mortal(newSVpv(feed_title.c_str(), feed_title.length())));
+
+	PUTBACK;
+
+	count = call_pv("get_episodes", G_ARRAY);
+
+	SPAGAIN;
+
+	episodes = malloc((count + 1) * sizeof(HV*));
+	episodes[count] = NULL;
+	
+	while (count > 0) {
+		episodes[--count] = savepv(SvPV_nolen(POPs));
+
+	FREETMPS;
+	LEAVE;
+
+	return episodes;
+}
+
+/*void PerlInterface::add_episode(string, HV*, string){};
+void PerlInterface::delete_episode(string, string, string){};
+void PerlInterface::delete_feed(string, string, string){};
+string PerlInterface::generate_episode_file_path(string, HV*){};
+string PerlInterface::normalize_string(string){};
+HV** PerlInterface::get_dowloaded_episodes_from_feed(string, string){};
+HV** PerlInterface::get_feeds(string){};
+HV** PerlInterface::get_dowloaded_episodes(string, string){};
+HV** PerlInterface::seach_episodes(string, string){};*/
+
