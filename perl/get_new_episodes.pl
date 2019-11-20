@@ -143,13 +143,13 @@ sub get_new_episodes{
 
 #programa de teste
 
-my @new_eps = @{get_new_episodes("Decrépitos", "episodes.json")};
+#my @new_eps = @{get_new_episodes("Decrépitos", "episodes.json")};
 
-for my $i (0 .. $#new_eps)
-{
-		for my $attribute ( keys %{$new_eps[$i]} )
-	{
-		print "$new_eps[$i]{$attribute}\n";
-	}
-        print "--------------\n";	
-}
+#for my $i (0 .. $#new_eps)
+#{
+#		for my $attribute ( keys %{$new_eps[$i]} )
+#	{
+#		print "$new_eps[$i]{$attribute}\n";
+#	}
+#        print "--------------\n";	
+#}

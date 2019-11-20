@@ -10,5 +10,7 @@ require "./perl/get_downloaded_episodes.pl";
 
 my @episodes = @{get_downloaded_episodes_from_feed("Decrépitos", "episodes.json")};
 
+print "$episodes[0]{title}\n";
 print "$episodes[0]{date}\n";
+print "$episodes[0]{url}\n";
 #print Dumper($episodes);
