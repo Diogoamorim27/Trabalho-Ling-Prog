@@ -78,22 +78,40 @@ string getInput(string prompt) {
 	WINDOW * promptwin = newwin(12, screenSize.x - 6, screenSize.y-12, 5);
 	box(promptwin, 0, 0);
 	refresh();
-	wrefresh(promptwin);
 	keypad(promptwin, true);
+	wrefresh(promptwin);
 	
 	mvwprintw(promptwin, 1, 1, prompt.c_str());
-	//wattroff(menuwin,  A_REVERSE);
+	wattroff(promptwin,  A_REVERSE);
 
 	int ch = mvwgetch(promptwin, 3, 1);
 	string input;
-	
+
+	//echo();
+
 	while( ch != '\n')
 	{
-		input.push_back(ch);
-		mvwprintw(promptwin, ch, 3, 1);
-		ch = wgetch(promptwin);		
+		if (ch == 127)
+		{
+			clear();	
+			if (!input.empty())
+				input.pop_back();
+
+		}
+		else
+			input.push_back(ch);
+		
+		
+		box(promptwin, 0, 0);
+		mvwprintw(promptwin, 1, 1, prompt.c_str());
+		wmove(promptwin,4,1);
+		wclrtoeol(promptwin);
+		refresh();
+		mvwprintw(promptwin, 4, 1, input.c_str());	
+		ch = wgetch(promptwin);	
 	}
 	
+
 	endwin();
 	return input;
 
@@ -101,7 +119,7 @@ string getInput(string prompt) {
 
 int main (int argc, char** argv) {	
 	init();
-	
+	noecho();
 	string options[6] = {	"Adicionar Feed",
 				"Baixar Episódio",
 				"Deletar Episódio",
