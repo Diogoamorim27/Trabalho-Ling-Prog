@@ -1,36 +1,41 @@
 #include <string>
 #include <ncurses.h>
 #include <iostream>
+#include <stdlib.h>
+#include "vector2.h"
 
 using namespace std;
 
-int main (int argc, char** argv) {
+static Vector2 screenSize;
+
+int init() {
 	/* NCURSES START */
 	initscr();
 	noecho();
 	cbreak();
 
 	// get screen size
-	int yMax, xMax;
-	getmaxyx(stdscr, yMax, xMax);
+	getmaxyx(stdscr, screenSize.y, screenSize.x);
+	
+	return 0;
+}
 
+int callMenu(string* options) {
 	// create a window for the menu
-	WINDOW * menuwin = newwin(12, xMax - 6, yMax-12, 5);
+	WINDOW * menuwin = newwin(12, screenSize.x - 6, screenSize.y-12, 5);
 	box(menuwin, 0, 0);
 	refresh();
+	curs_set(0);
 	wrefresh(menuwin);
+
 
 	//makes it so we can use arrow keys
 	keypad(menuwin, true);
 
-	string options[6] = {	"Adicionar Feed",
-				"Baixar Episodio",
-				"Deletar Episodio",
-				"Excluir Feed",
-				"Mostrar Baixados",
-				"Procurar Novos Episodios" };
 	int choice;
 	int highlight = 0;
+
+	string url;
 
 	while(1) 
 	{
@@ -49,20 +54,73 @@ int main (int argc, char** argv) {
 		switch(choice)
 		{
 			case KEY_UP:
-				highlight--;
+				if (highlight > 0)
+					highlight--;
 				break;
 			case KEY_DOWN:
-				highlight++;
+				if (highlight < 6 - 1)
+					highlight++;
 				break;
 			default:
 				break;
 		}
+		
 		if (choice == 10)
 			break;
 	}
 
-	cout << options[highlight];
-
 	endwin();
+	return highlight;
+}
+
+string getInput(string prompt) {
+	// create a window for the prompt
+	WINDOW * promptwin = newwin(12, screenSize.x - 6, screenSize.y-12, 5);
+	box(promptwin, 0, 0);
+	refresh();
+	wrefresh(promptwin);
+	keypad(promptwin, true);
+	
+	mvwprintw(promptwin, 1, 1, prompt.c_str());
+	//wattroff(menuwin,  A_REVERSE);
+
+	int ch = mvwgetch(promptwin, 3, 1);
+	string input;
+	
+	while( ch != '\n')
+	{
+		input.push_back(ch);
+		mvwprintw(promptwin, ch, 3, 1);
+		ch = wgetch(promptwin);		
+	}
+	
+	endwin();
+	return input;
+
+} 
+
+int main (int argc, char** argv) {	
+	init();
+	
+	string options[6] = {	"Adicionar Feed",
+				"Baixar Episódio",
+				"Deletar Episódio",
+				"Excluir Feed",
+				"Mostrar Baixados",
+				"Procurar Novos Episódios" };
+
+
+	int choice = callMenu(options);
+		
+	string input = getInput("insira a url do feed \n");
+	cout << input<<endl;
+	
 	return 0;
 }
+
+int insert_url() {
+/*	int ch = wgetch(menuwin);
+				
+					*/
+}
+
