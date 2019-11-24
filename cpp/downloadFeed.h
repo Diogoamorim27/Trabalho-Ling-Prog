@@ -1,5 +1,5 @@
-#ifndef ADD_FEED_H
-#define ADD_FEED_H
+#ifndef DOWNLOAD_FEED_H
+#define DOWNLOAD_FEED_H
 
 #include <iostream>
 #include <string>
