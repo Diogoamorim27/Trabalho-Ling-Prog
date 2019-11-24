@@ -10,6 +10,6 @@ using namespace std;
 
 void generateRandomString(string &, const int);
 
-void addFeed(string feedUrl);
+string downloadFeed(string feedUrl);
 
 #endif

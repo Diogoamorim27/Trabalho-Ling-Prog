@@ -5,7 +5,7 @@
 //#include <perl.h>
 //#include <EXTERN.h>
 
-#include "addFeed.h"
+#include "downloadFeed.h"
 #include "vector2.h"
 #include "ui.h"
 
@@ -27,14 +27,14 @@ int main (int argc, char** argv) {
 
 	int choice = callMenu(options);
 	
-	string input;	
+	string feed_url;	
 
 	switch (choice)
 	{
 		case 0 : //adicionar feed
-			input = getInput("insira a url do feed \n");
-			addFeed(input); //downloads feed xml	
-		break;
+			feed_url = getInput("insira a url do feed \n");
+			cout << downloadFeed(feed_url); //downloads feed xml	
+			break;
 		case 1:
 		break;
 		

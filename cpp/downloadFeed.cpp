@@ -4,7 +4,7 @@
 #include <string>
 #include <stdexcept>
 
-#include "addFeed.h"
+#include "downloadFeed.h"
 
 using namespace std;
 
@@ -22,7 +22,7 @@ void generateRandomString(string &str, const int len){
     str.at(len-1) = 0;
 }
 
-void addFeed(string feedUrl) {
+string downloadFeed(string feedUrl) {
     string tmpFile(TEMPORARY_FILE_NAME_LENGTH, ' ');
     ofstream file;
 
@@ -36,13 +36,7 @@ void addFeed(string feedUrl) {
             cout << "Download finished." << endl;
             file.close();
 
-           /* Perl:
-            *
-            * add_feed(feedUrl, tmpFile);
-            *
-            *
-            */ 
-        }
+       }
         catch (const ofstream::failure &e) {
             cerr << "Error creating file: " << e.what()
                  << "\nUnable to add feed.\n";
@@ -52,4 +46,6 @@ void addFeed(string feedUrl) {
         cerr << "Out of Range Error: " << oor.what()
              << "\nUnable to add feed.\n";
     }
+
+    return tmpFile;
 }
