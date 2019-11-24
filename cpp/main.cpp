@@ -2,9 +2,11 @@
 #include <ncurses.h>
 #include <iostream>
 #include <stdlib.h>
-//#include <perl.h>
-//#include <EXTERN.h>
+#include <EXTERN.h>
+#include <perl.h>
+#include <vector>
 
+#include "perl_interface.h"
 #include "downloadFeed.h"
 #include "vector2.h"
 #include "ui.h"
@@ -12,31 +14,35 @@
 using namespace std;
 
 int main (int argc, char** argv) {	
-//	PerlInterface perl("");
-//	perl.interpreter();
+	PerlInterface perl("");
+	perl.interpreter();
 
 	init();
 	noecho();
-	string options[6] = {	"Adicionar Feed",
-				"Baixar Episódio",
-				"Deletar Episódio",
-				"Excluir Feed",
-				"Mostrar Baixados",
-				"Procurar Novos Episódios" };
+	vector <string> options = {	"Adicionar Feed",
+					"Baixar Episódio",
+					"Deletar Episódio",
+					"Excluir Feed",
+					"Mostrar Baixados",
+					"Procurar Novos Episódios",
+       					"Sair"				};
 
 
 	int choice = callMenu(options);
 	
 	string feed_url;	
+	string temp_feed_name;
 
 	switch (choice)
 	{
 		case 0 : //adicionar feed
 			feed_url = getInput("insira a url do feed \n");
-			cout << downloadFeed(feed_url); //downloads feed xml	
+			temp_feed_name = downloadFeed(feed_url); //baixa o arquivo xml do feed
+			perl.add_feed(feed_url, temp_feed_name); //adiciona o feed ao arquvivo json
 			break;
 		case 1:
-		break;
+			
+			break;
 		
 		case 2:
 		break;
@@ -51,6 +57,8 @@ int main (int argc, char** argv) {
 		
 		break;
 		
+		case 7:
+		break;
 		default:
 		break;
 	}

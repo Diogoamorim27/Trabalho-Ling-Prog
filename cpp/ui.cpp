@@ -2,6 +2,7 @@
 #include <ncurses.h>
 #include <iostream>
 #include <stdlib.h>
+#include <vector>
 #include "vector2.h"
 
 using namespace std;
@@ -20,7 +21,7 @@ int init() {
 	return 0;
 }
 
-int callMenu(string* options) {
+int callMenu(vector <string> options) {
 	// create a window for the menu
 	WINDOW * menuwin = newwin(12, screenSize.x - 6, screenSize.y-12, 5);
 	box(menuwin, 0, 0);
@@ -34,12 +35,12 @@ int callMenu(string* options) {
 
 	int choice;
 	int highlight = 0;
-
+	int size = options.size();
 	string url;
 
 	while(1) 
 	{
-		for(int i = 0; i<6; i++)
+		for(int i = 0; i<size; i++)
 		{
 			if (i == highlight) 
 			{
@@ -58,7 +59,7 @@ int callMenu(string* options) {
 					highlight--;
 				break;
 			case KEY_DOWN:
-				if (highlight < 6 - 1)
+				if (highlight < size - 1)
 					highlight++;
 				break;
 			default:

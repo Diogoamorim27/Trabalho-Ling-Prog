@@ -68,7 +68,7 @@ void PerlInterface::add_feed(string url, string feed_xml) {
 	LEAVE;
 }
 
-HV** PerlInterface::get_episodes(string feed_title) {
+/*HV** PerlInterface::get_episodes(string feed_title) {
 	dSP;
 
 	int count;
@@ -98,7 +98,7 @@ HV** PerlInterface::get_episodes(string feed_title) {
 	return episodes;
 }
 
-/*void PerlInterface::add_episode(string, HV*, string){};
+void PerlInterface::add_episode(string, HV*, string){};
 void PerlInterface::delete_episode(string, string, string){};
 void PerlInterface::delete_feed(string, string, string){};
 string PerlInterface::generate_episode_file_path(string, HV*){};

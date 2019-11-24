@@ -123,5 +123,5 @@ sub add_feed
 
 #programa de teste
 #
-#
-#add_feed("https://rss.acast.com/vicegamingsnewpodcast", "waypoint_radio.xml");
+
+add_feed("https://rss.acast.com/vicegamingsnewpodcast", "waypoint_radio.xml");
