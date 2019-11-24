@@ -6,7 +6,7 @@ LD = g++
 LDFLAGS = -Wall -std=c++11
 
 I_CPR = cpr/include/
-L_CPR = cpr/build/lib/ -lcpr -lcurl -lgtest -lgtest_main -lmongoose -ltest_server
+L_CPR = cpr/lib/ -lcpr -lcurl -lgtest -lgtest_main -lmongoose -ltest_server
 
 ADD_FEED_OBJS = addFeedTest.o addFeed.o
 #DOWNLOAD_EP_OBJS = downloadEpisodeTest.o downloadEpisode.o
