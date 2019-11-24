@@ -10,10 +10,11 @@ Feed::Feed(string title, string language, string url) : title (title), language 
 }
 
 Feed::~Feed() {
-    //if (!episodes.empty()){
-        //delete vector
-        //vector<Episode *>().swap(tempVector);
-    //}
+    if (!episodes.empty()){
+        for (int i = 0; i < episodes.size(); i++)
+            delete episodes.at(i);
+        episodes.clear();
+    }
 }
 
 string Feed::getTitle() {

@@ -10,18 +10,26 @@ using namespace std;
 void downloadEpisode(Episode episode) {
     ofstream file;
     string episodeFilePath;
+    string downloadEpisodeCommand = "curl ";
 
     try {
         /* Perl:
          * episodeFilePath = generate_episode_file_path(episode.getFeedTitle(), episode);
          */
 
-        file.open(episodeFilePath);
-        cout << "Downloading episode..." << endl;
-        auto response = cpr::Get(cpr::Url{episode.getUrl()});
-        file << response.text;
-        cout << "Download finished." << endl;
-        file.close();
+        downloadEpisodeCommand += episode.getUrl();
+        downloadEpisodeCommand += " --output ";
+        downloadEpisodeCommand += episodeFilePath;
+
+        if (system(downloadEpisodeCommand.c_str()) != 0) {
+            //try with wget instead
+            downloadEpisodeCommand = "wget -O ";
+            downloadEpisodeCommand += episodeFilePath;
+            downloadEpisodeCommand += " ";
+            downloadEpisodeCommand += episode.getUrl();
+            if (system(downloadEpisodeCommand.c_str()) != 0)
+                cerr << "Unable to download episode\n";
+        }
 
         /* Perl:
          * add_episode_to_json(episode.getFeedTitle(), episode, "episodes.json");
