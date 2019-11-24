@@ -7,6 +7,7 @@ LDFLAGS = -Wall -std=c++11
 
 I_CPR = cpr/include/ 
 L_CPR = cpr/build/lib/ -lcpr -lcurl -lgtest -lgtest_main -lmongoose -ltest_server -lncurses `perl -MExtUtils::Embed -e ccopts -e ldopts` 
+O_FLAGS = -Wcpp
 
 MAIN_OBJS = main.o downloadFeed.o ui.o perl_interface.o
 
@@ -30,7 +31,7 @@ all: $(EXECS)
 #	$(LD) $(LDFLAGS) -o $@ $(DELETE_EP_OBJS) -I $(I_CPR) -L $(L_CPR)
 #
 main: $(MAIN_OBJS)
-	$(LD) $(LDFLAGS) -o $@ $(MAIN_OBJS) -I $(I_CPR) -L $(L_CPR)
+	$(LD) $(LDFLAGS) -O $(O_FLAGS) -o $@ $(MAIN_OBJS) -I $(I_CPR) -L $(L_CPR)
 
 clean:
 	rm -f *.o $(EXECS)

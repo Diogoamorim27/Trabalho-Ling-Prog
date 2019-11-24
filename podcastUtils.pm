@@ -658,7 +658,7 @@ sub search_episodes{
 }
 
 sub call_perl_function_hash {
-    if ($_[0] == "get_episodes") {
+    if ($_[0] eq "get_episodes") {
         my @get_episodes = get_episodes($_[1]);
         my @get_episodes_str;
         my $j = 0;
@@ -670,7 +670,7 @@ sub call_perl_function_hash {
         }
         return @get_episodes_str;
     }
-    if ($_[0] == "get_dowloaded_episodes_from_feed") {
+    if ($_[0] eq "get_dowloaded_episodes_from_feed") {
         my @get_downloaded_episodes = @{get_downloaded_episodes_from_feed($_[1], $_[2])};
         my @get_downloaded_episodes_str;
         my $j = 0;
@@ -682,7 +682,7 @@ sub call_perl_function_hash {
         }
         return @get_downloaded_episodes_str;
     }
-    if ($_[0] == "get_feeds") {
+    if ($_[0] eq "get_feeds") {
         my @get_feeds = get_feeds($_[1]);
         my @get_feeds_str;
         my $j = 0;
@@ -694,7 +694,7 @@ sub call_perl_function_hash {
         }
         return @get_feeds_str;
     }
-    if ($_[0] == "search_episodes") {
+    if ($_[0] eq "search_episodes") {
         my @search_episodes = search_episodes($_[1], $_[2]);
         my @search_episodes_str;
         my $j = 0;
@@ -706,7 +706,7 @@ sub call_perl_function_hash {
         }
         return @search_episodes_str;
     }
-    if ($_[0] == "get_new_episodes") {
+    if ($_[0] eq "get_new_episodes") {
         my @get_new_episodes = @{get_new_episodes($_[1])};
         my @get_new_episodes_str;
         my $j = 0;
@@ -722,7 +722,7 @@ sub call_perl_function_hash {
 }
 
 sub call_perl_function_string {
-    if ($_[0] == "generate_episode_file_path") {
+    if ($_[0] eq "generate_episode_file_path") {
         my %episode;
         $episode{title} = $_[2];
         $episode{url} = $_[3];
@@ -732,7 +732,7 @@ sub call_perl_function_string {
 }
 
 sub call_perl_function_void {
-    if ($_[0] == "add_episode_to_json") {
+    if ($_[0] eq "add_episode_to_json") {
         my %episode;
         $episode{title} = $_[3];
         $episode{date} = $_[4];

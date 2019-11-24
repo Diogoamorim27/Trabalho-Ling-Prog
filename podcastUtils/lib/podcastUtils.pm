@@ -48,6 +48,9 @@ our @EXPORT = qw(
 	get_new_episodes
 	normalize_string
  	search_episodes
+	call_perl_function_hash
+	call_perl_function_string
+	call_perl_function_void
 );
 
 our $VERSION = '0.01';
@@ -654,7 +657,91 @@ sub search_episodes{
     return @results;
 }
 
-1;
+sub call_perl_function_hash {
+    if ($_[0] == "get_episodes") {
+        my @get_episodes = get_episodes($_[1]);
+        my @get_episodes_str;
+        my $j = 0;
+        for my $i (0 .. $#get_episodes) {
+            $get_episodes_str[$j] = $get_episodes[$i]{title};
+            $get_episodes_str[$j+1] = $get_episodes[$i]{date};
+            $get_episodes_str[$j+2] = $get_episodes[$i]{url};
+            $j = $j + 3;
+        }
+        return @get_episodes_str;
+    }
+    if ($_[0] == "get_dowloaded_episodes_from_feed") {
+        my @get_downloaded_episodes = @{get_downloaded_episodes_from_feed($_[1], $_[2])};
+        my @get_downloaded_episodes_str;
+        my $j = 0;
+        for my $i (0 .. $#get_downloaded_episodes) {
+            $get_downloaded_episodes_str[$j] = $get_downloaded_episodes[$i]{title};
+            $get_downloaded_episodes_str[$j+1] = $get_downloaded_episodes[$i]{date};
+            $get_downloaded_episodes_str[$j+2] = $get_downloaded_episodes[$i]{url};
+            $j = $j + 3;
+        }
+        return @get_downloaded_episodes_str;
+    }
+    if ($_[0] == "get_feeds") {
+        my @get_feeds = get_feeds($_[1]);
+        my @get_feeds_str;
+        my $j = 0;
+        for my $i (0 .. $#get_feeds) {
+            $get_feeds_str[$j] = $get_feeds[$i]{title};
+            $get_feeds_str[$j+1] = $get_feeds[$i]{language};
+            $get_feeds_str[$j+2] = $get_feeds[$i]{url};
+            $j = $j + 3;
+        }
+        return @get_feeds_str;
+    }
+    if ($_[0] == "search_episodes") {
+        my @search_episodes = search_episodes($_[1], $_[2]);
+        my @search_episodes_str;
+        my $j = 0;
+        for my $i (0 .. $#search_episodes) {
+            $search_episodes_str[$j] = $search_episodes[$i]{title};
+            $search_episodes_str[$j+1] = $search_episodes[$i]{date};
+            $search_episodes_str[$j+2] = $search_episodes[$i]{url};
+            $j = $j + 3;
+        }
+        return @search_episodes_str;
+    }
+    if ($_[0] == "get_new_episodes") {
+        my @get_new_episodes = @{get_new_episodes($_[1])};
+        my @get_new_episodes_str;
+        my $j = 0;
+        for my $i (0 .. $#get_new_episodes) {
+            $get_new_episodes_str[$j] = $get_new_episodes[$i]{title};
+            $get_new_episodes_str[$j+1] = $get_new_episodes[$i]{date};
+            $get_new_episodes_str[$j+2] = $get_new_episodes[$i]{url};
+            $j = $j + 3;
+        }
+        return @get_new_episodes_str;
+    }
+    warn "Unknown function.\n";
+}
+
+sub call_perl_function_string {
+    if ($_[0] == "generate_episode_file_path") {
+        my %episode;
+        $episode{title} = $_[2];
+        $episode{url} = $_[3];
+        return generate_episode_file_path($_[1], \%episode);
+    }
+    warn "Unknown function.\n";
+}
+
+sub call_perl_function_void {
+    if ($_[0] == "add_episode_to_json") {
+        my %episode;
+        $episode{title} = $_[3];
+        $episode{date} = $_[4];
+        $episode{url} = $_[5];
+        add_episode_to_json($_[1], \%episode, $_[2]);
+    }
+    warn "Unknown function.\n";
+}
+
 
 # Preloaded methods go here.
 

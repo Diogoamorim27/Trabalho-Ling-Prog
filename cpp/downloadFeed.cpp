@@ -47,7 +47,7 @@ string downloadFeed(string feedUrl) {
         
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeFunction);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &responseString);
-        curl_easy_setopt(curl, CURLOPT_HEADERDATA, &headerstring);
+        curl_easy_setopt(curl, CURLOPT_HEADERDATA, &headerString);
         
         
         curl_easy_perform(curl);

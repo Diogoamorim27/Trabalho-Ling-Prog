@@ -1,5 +1,6 @@
 #include <stddef.h>
 #include <string>
+#include <vector>
 #include "perl_interface.h"
 
 static void xs_init (pTHX);
@@ -19,7 +20,7 @@ xs_init(pTHX)
 }
 
 
-PerlInterface::PerlInterface(string script = "oi") {
+PerlInterface::PerlInterface(string script = "") {
 	int dummy_argc = 0;
 	char*** dummy_env = 0;
 	char string[] = {};
@@ -61,50 +62,45 @@ void PerlInterface::add_feed(string url, string feed_xml) {
 
 	call_pv("add_feed", G_DISCARD);
 
-	SPAGAIN; //como a função é void tvz não seja necessário
-
+	SPAGAIN;
 	PUTBACK;
 	FREETMPS;
 	LEAVE;
 }
 
-/*HV** PerlInterface::get_episodes(string feed_title) {
-	dSP;
-
+//void PerlInteface::call_perl_funnction_void(string, string, string, string, string, string){};
+		
+vector <string> PerlInterface::call_perl_function_hash(string function, string feed_name){
+	dSP;	
+	int i;
 	int count;
-	HV** episodes;
-
+	vector <string> func_return;
+	
 	ENTER;
 	SAVETMPS;
 	PUSHMARK(SP);
 
-	XPUSHs(sv_2mortal(newSVpv(feed_title.c_str(), feed_title.length())));
+	XPUSHs(sv_2mortal(newSVpv(function.c_str(),function.length())));
+	XPUSHs(sv_2mortal(newSVpv(feed_name.c_str(),feed_name.length())));
 
 	PUTBACK;
 
-	count = call_pv("get_episodes", G_ARRAY);
+	count = call_pv("call_perl_function_hash", G_ARRAY);
 
 	SPAGAIN;
-
-	episodes = malloc((count + 1) * sizeof(HV*));
-	episodes[count] = NULL;
 	
-	while (count > 0) {
-		episodes[--count] = savepv(SvPV_nolen(POPs));
-
+	SV *sv;
+	for (i=0;i<count;i++) {
+		sv = POPs;
+		func_return.push_back(SvPV_nolen(sv));
+	}
 	FREETMPS;
 	LEAVE;
 
-	return episodes;
+	return func_return;
 }
+		
+//string PerlInterface::call_perl_function_string(string, string, string, string){};
 
-void PerlInterface::add_episode(string, HV*, string){};
-void PerlInterface::delete_episode(string, string, string){};
-void PerlInterface::delete_feed(string, string, string){};
-string PerlInterface::generate_episode_file_path(string, HV*){};
-string PerlInterface::normalize_string(string){};
-HV** PerlInterface::get_dowloaded_episodes_from_feed(string, string){};
-HV** PerlInterface::get_feeds(string){};
-HV** PerlInterface::get_dowloaded_episodes(string, string){};
-HV** PerlInterface::seach_episodes(string, string){};*/
+
 
