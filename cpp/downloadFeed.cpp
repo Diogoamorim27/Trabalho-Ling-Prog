@@ -56,7 +56,7 @@ string downloadFeed(string feedUrl) {
         curl_easy_getinfo(curl, CURLINFO_EFFECTIVE_URL, &url);
         
         file.open(tmpFile);
-        file << responseCode;
+        file << responseString;
         file.close();
 
         curl_easy_cleanup(curl);

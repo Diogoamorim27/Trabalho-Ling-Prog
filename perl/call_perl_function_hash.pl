@@ -9,7 +9,7 @@ require "./perl/search_episode.pl";
 # and converts its return value to an array of strings, so that the C++ can 
 # understand it.
 sub call_perl_function_hash {
-    if ($_[0] == "get_episodes") {
+    if ($_[0] eq "get_episodes") {
         my @get_episodes = get_episodes($_[1]);
         my @get_episodes_str;
         my $j = 0;
@@ -21,7 +21,7 @@ sub call_perl_function_hash {
         }
         return @get_episodes_str;
     }
-    if ($_[0] == "get_dowloaded_episodes_from_feed") {
+    if ($_[0] eq "get_dowloaded_episodes_from_feed") {
         my @get_downloaded_episodes = @{get_downloaded_episodes_from_feed($_[1], $_[2])};
         my @get_downloaded_episodes_str;
         my $j = 0;
@@ -33,7 +33,7 @@ sub call_perl_function_hash {
         }
         return @get_downloaded_episodes_str;
     }
-    if ($_[0] == "get_feeds") {
+    if ($_[0] eq "get_feeds") {
         my @get_feeds = get_feeds($_[1]);
         my @get_feeds_str;
         my $j = 0;
@@ -45,7 +45,7 @@ sub call_perl_function_hash {
         }
         return @get_feeds_str;
     }
-    if ($_[0] == "search_episodes") {
+    if ($_[0] eq "search_episodes") {
         my @search_episodes = search_episodes($_[1], $_[2]);
         my @search_episodes_str;
         my $j = 0;
@@ -57,7 +57,7 @@ sub call_perl_function_hash {
         }
         return @search_episodes_str;
     }
-    if ($_[0] == "get_new_episodes") {
+    if ($_[0] eq "get_new_episodes") {
         my @get_new_episodes = @{get_new_episodes($_[1])};
         my @get_new_episodes_str;
         my $j = 0;
