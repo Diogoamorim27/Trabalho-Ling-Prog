@@ -34,11 +34,16 @@ int main (int argc, char** argv) {
 	int choice = callMenu(options);
 	
 	string feed_url;	
+	string feed_name;
 	string temp_feed_name;
 	vector <string> feeds_string;
 	vector <string> feed_titles;
+	vector <string> episodes_string;
+	vector <string> episode_titles;
 	int i;
 	
+	while(choice != 7)
+	{
 
 	switch (choice)
 	{
@@ -84,8 +89,25 @@ int main (int argc, char** argv) {
 			perl.add_feed(feed_url, temp_feed_name); //cria diretorio do feed e adiciona no json 
 			break;
 		
-		case 2:
-                    
+		case 2: //baixar episodio
+			feeds_string = perl.call_perl_function_hash("get_feeds", "./feeds.json");
+			i = 2;
+			while (i < feeds_string.size())
+			{
+				feed_titles.push_back(feeds_string[i]);
+				i += 3;
+			}
+			choice = callMenu(feed_titles);
+			feed_name = feed_titles[choice];
+			episodes_string = perl.call_perl_function_hash("get_episodes", feed_name);
+                    	i = 2;
+			while (i < feeds_string.size())
+			{
+				episode_titles.push_back(episodes_string[i]);
+				i += 3;
+			}
+			choice = callMenu(episode_titles);
+
 		    break;
 		
 		case 3:
@@ -103,8 +125,10 @@ int main (int argc, char** argv) {
 		default:
 		break;
 	}
+
+	choice = callMenu(options);
 	
-	
+	}
 	//cout << input<<endl;
 	
 	return 0;
