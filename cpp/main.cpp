@@ -70,7 +70,7 @@ int main (int argc, char** argv) {
 			cout << choice << endl;
 			feed_url = feeds_string[choice*3];
 			cout << feed_url<<endl;
-		/*	try {
+			try {
 			    temp_feed_name = downloadFeed(feed_url); //baixa o arquivo xml do feed
                         }
                         catch (out_of_range &oor) {
@@ -81,7 +81,7 @@ int main (int argc, char** argv) {
                             cerr << "Error creating file: " << e.what()
                                  << "\nUnable to add feed.\n";
                         }
-			perl.add_feed(feed_url, temp_feed_name); //cria diretorio do feed e adiciona no json */
+			perl.add_feed(feed_url, temp_feed_name); //cria diretorio do feed e adiciona no json 
 			break;
 		
 		case 2:
