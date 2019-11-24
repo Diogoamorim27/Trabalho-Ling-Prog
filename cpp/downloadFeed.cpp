@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
-#include <cpr/cpr.h>
 #include <string>
+#include <curl/curl.h>
 #include <stdexcept>
 
 #include "downloadFeed.h"
@@ -22,20 +22,48 @@ void generateRandomString(string &str, const int len){
     str.at(len-1) = 0;
 }
 
+
+size_t writeFunction(void *ptr, size_t size, size_t nmemb, string *data) {
+    data->append((char *) ptr, size * nmemb);
+    return size * nmemb;
+}
+
 string downloadFeed(string feedUrl) {
     string tmpFile(TEMPORARY_FILE_NAME_LENGTH, ' ');
     ofstream file;
+    string responseString;
+    string headerString;
+    char* url;
+    long responseCode;
+    double elapsed;
 
     try {
         generateRandomString(tmpFile, TEMPORARY_FILE_NAME_LENGTH);
         try {
-            file.open(tmpFile);
-            cout << "Downloading feed..." << endl;
-            auto response = cpr::Get(cpr::Url{feedUrl});
-            file << response.text;
-            cout << "Download finished." << endl;
-            file.close();
+            auto curl = curl_easy_init();
+            if (curl) {
+                curl_easy_setopt(curl, CURLOPT_URL, feedUrl.c_str());
+                curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1L);
+                curl_easy_setopt(curl, CURLOPT_MAXREDIRS, 50L);
+                curl_easy_setopt(curl, CURLOPT_TCP_KEEPALIVE, 1L);
+                
+                curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeFunction);
+                curl_easy_setopt(curl, CURLOPT_WRITEDATA, &responseString);
+                curl_easy_setopt(curl, CURLOPT_HEADERDATA, &headerstring);
+                
+                
+                curl_easy_perform(curl);
+                curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &responseCode);
+                curl_easy_getinfo(curl, CURLINFO_TOTAL_TIME, &elapsed);
+                curl_easy_getinfo(curl, CURLINFO_EFFECTIVE_URL, &url);
+                
+                file.open(tmpFile);
+                file << responseCode;
+                file.close();
 
+                curl_easy_cleanup(curl);
+                curl = NULL;
+            }
        }
         catch (const ofstream::failure &e) {
             cerr << "Error creating file: " << e.what()

@@ -12,4 +12,6 @@ void generateRandomString(string &, const int);
 
 string downloadFeed(string feedUrl);
 
+size_t writeFunction(void *, size_t, size_t, string *);
+
 #endif
