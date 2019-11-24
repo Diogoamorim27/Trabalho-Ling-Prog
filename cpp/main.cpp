@@ -20,6 +20,7 @@ int main (int argc, char** argv) {
 	init();
 	noecho();
 	vector <string> options = {	"Adicionar Feed",
+                                        "Atualizar Feed",
 					"Baixar Episódio",
 					"Deletar Episódio",
 					"Excluir Feed",
@@ -36,16 +37,26 @@ int main (int argc, char** argv) {
 	switch (choice)
 	{
 		case 0 : //adicionar feed
-			feed_url = getInput("insira a url do feed \n");
-			temp_feed_name = downloadFeed(feed_url); //baixa o arquivo xml do feed
-			perl.add_feed(feed_url, temp_feed_name); //adiciona o feed ao arquvivo json
+			feed_url = getInput("Insira a url do feed.\n");
+                        try {
+			    temp_feed_name = downloadFeed(feed_url); //baixa o arquivo xml do feed
+                        }
+                        catch (out_of_range &oor) {
+                            cerr << "Out of Range Error: " << oor.what()
+                                 << "\nUnable to add feed.\n";
+                        }
+                        catch (const ofstream::failure &e) {
+                            cerr << "Error creating file: " << e.what()
+                                 << "\nUnable to add feed.\n";
+                        }
+			perl.add_feed(feed_url, temp_feed_name); //cria diretorio do feed e adiciona no json
 			break;
 		case 1:
-			
 			break;
 		
 		case 2:
-		break;
+                    
+		    break;
 		
 		case 3:
 		break;

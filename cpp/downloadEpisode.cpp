@@ -23,6 +23,7 @@ void downloadEpisode(Episode episode) {
 
         if (system(downloadEpisodeCommand.c_str()) != 0) {
             //try with wget instead
+            downloadEPisodeCommand.clear();
             downloadEpisodeCommand = "wget -O ";
             downloadEpisodeCommand += episodeFilePath;
             downloadEpisodeCommand += " ";
