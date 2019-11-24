@@ -117,28 +117,4 @@ string getInput(string prompt) {
 
 } 
 
-int main (int argc, char** argv) {	
-	init();
-	noecho();
-	string options[6] = {	"Adicionar Feed",
-				"Baixar Episódio",
-				"Deletar Episódio",
-				"Excluir Feed",
-				"Mostrar Baixados",
-				"Procurar Novos Episódios" };
-
-
-	int choice = callMenu(options);
-		
-	string input = getInput("insira a url do feed \n");
-	cout << input<<endl;
-	
-	return 0;
-}
-
-int insert_url() {
-/*	int ch = wgetch(menuwin);
-				
-					*/
-}
 
