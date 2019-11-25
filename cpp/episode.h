@@ -13,6 +13,10 @@ class Episode {
         string getTitle();
         string getDate();
         string getUrl();
+	void setFeedTitle(string);
+	void setTitle(string);
+	void setDate(string);
+	void setUrl(string);
 
     private:
         string feedTitle;

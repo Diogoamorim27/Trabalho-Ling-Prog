@@ -13,6 +13,9 @@
 #include "downloadFeed.h"
 #include "vector2.h"
 #include "ui.h"
+#include "episode.h"
+#include "downloadEpisode.h"
+#include "deleteEpisode.h"
 
 using namespace std;
 
@@ -40,11 +43,14 @@ int main (int argc, char** argv) {
 	string feed_name;
 	string feed_nrm_title;
 	string temp_feed_name;
+	string episode_file_path;
 	vector <string> feeds_string;
 	vector <string> feed_titles;
 	vector <string> episodes_string;
 	vector <string> episode_titles;
 	int i;
+
+	Episode ep_dl("","","","");
 	
 	while(choice != 7)
 	{
@@ -120,7 +126,9 @@ int main (int argc, char** argv) {
 			choice = callMenu(feed_titles);
 			feed_name = feed_titles[choice];
 			episodes_string = perl.call_perl_function_hash("get_episodes", feed_name);
-                    	
+                   	
+//			callScrollingMenu(episodes_string);
+
 			i = 2;
 			while (i < episodes_string.size())
 			{
@@ -128,11 +136,54 @@ int main (int argc, char** argv) {
 				i += 3;
 			}
 			choice = callScrollingMenu(episode_titles);
+			ep_dl.setTitle(episode_titles[choice]);
+			ep_dl.setUrl(episodes_string[choice*3]);
+			ep_dl.setDate(episodes_string[choice*3 + 1]);
+			ep_dl.setFeedTitle(feed_name);
+		       	
+			episode_file_path = perl.call_perl_function_string("generate_episode_file_path", feed_name, ep_dl.getTitle(), ep_dl.getUrl());
 
-		    break;
+			cout << episode_file_path <<endl;
+			downloadEpisode(ep_dl, episode_file_path);
+			
+			break;
 		
 		case 3:
-		break;
+			feeds_string = perl.call_perl_function_hash("get_feeds", "./feeds.json");
+			i = 2;
+			while (i < feeds_string.size())
+			{
+				feed_titles.push_back(feeds_string[i]);
+				i += 3;
+			}
+			choice = callMenu(feed_titles);
+			feed_name = feed_titles[choice];
+			episodes_string = perl.call_perl_function_hash("get_downloaded_episodes_from_feed", feed_name);
+
+
+			i = 2;
+			while (i < episodes_string.size())
+			{
+				episode_titles.push_back(episodes_string[i]);
+				i += 3;
+			}
+		
+			choice = callMenu(episode_titles);
+			ep_dl.setTitle(episode_titles[choice]);
+			ep_dl.setUrl(episodes_string[choice*3]);
+			ep_dl.setDate(episodes_string[choice*3 + 1]);
+			ep_dl.setFeedTitle(feed_name);
+		       	
+			episode_file_path = perl.call_perl_function_string("generate_episode_file_path", feed_name, ep_dl.getTitle(), ep_dl.getUrl());
+
+			cout << episode_file_path <<endl;
+			deleteEpisode(ep_dl, episode_file_path);
+			
+
+			cout<<feed_name<<endl<<ep_dl.getTitle()<<endl;
+
+			perl.delete_episode(feed_name, ep_dl.getTitle());
+			break;
 		
 		case 4:
 		break;
@@ -141,7 +192,7 @@ int main (int argc, char** argv) {
 		
 		break;
 		
-		case 7:
+		case 6:
 		break;
 		default:
 		break;

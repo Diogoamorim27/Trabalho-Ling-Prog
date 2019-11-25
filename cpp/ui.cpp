@@ -3,6 +3,8 @@
 #include <iostream>
 #include <stdlib.h>
 #include <vector>
+#include <algorithm>
+
 #include "vector2.h"
 
 using namespace std;
@@ -94,16 +96,23 @@ int callScrollingMenu(vector <string> options) {
 
 	int offset = 0;
 
+	int max_scr = screenSize.y-6 ;
+	int screen_limit = std::max(size, max_scr);
+
 	while(1) 
 	{
-		for(int i = 0; i < (screenSize.y - 6); i++)
+		for(int i = 0; i < screen_limit; i++)
 		{
 			if (i == highlight) 
 			{
 				wattron(menuwin, A_REVERSE);
 
 			}
-			mvwprintw(menuwin, i+1, 1, options[i+offset].c_str());
+			if (i+offset <= options.size())
+				mvwprintw(menuwin, i+1, 1, options[i+offset].c_str());
+			else
+				mvwprintw(menuwin, i+1, 1, options[i].c_str());
+					
 			wattroff(menuwin,  A_REVERSE);
 		}
 		choice = wgetch(menuwin);

@@ -134,7 +134,57 @@ vector <string> PerlInterface::call_perl_function_hash(string function, string f
 	return func_return;
 }
 		
-//string PerlInterface::call_perl_function_string(string, string, string, string){};
+string PerlInterface::call_perl_function_string(string func, string feed_name, string ep_title, string ep_url){
+	dSP;
+	ENTER;
+	SAVETMPS;
+	PUSHMARK(SP);
+
+	string return_str;
+
+	XPUSHs(sv_2mortal(newSVpv(func.c_str(),func.length())));
+	XPUSHs(sv_2mortal(newSVpv(feed_name.c_str(),feed_name.length())));
+	XPUSHs(sv_2mortal(newSVpv(ep_title.c_str(),ep_title.length())));
+	XPUSHs(sv_2mortal(newSVpv(ep_url.c_str(),ep_url.length())));
+
+	PUTBACK;
+
+	call_pv("call_perl_function_string", G_SCALAR);
+
+	SPAGAIN;
+	
+	SV *sv = POPs;
+	return_str = SvPV_nolen(sv);
+
+	FREETMPS;
+	LEAVE;
+
+	return return_str;
 
 
+}
 
+
+void PerlInterface::delete_episode(string feed_name, string episode_name) {
+	dSP;
+	ENTER;
+	SAVETMPS;
+	PUSHMARK(SP);
+
+	string return_str;
+
+	string eps = "./episodes.json";
+
+	XPUSHs(sv_2mortal(newSVpv(feed_name.c_str(),feed_name.length())));
+	XPUSHs(sv_2mortal(newSVpv(episode_name.c_str(),episode_name.length())));
+	XPUSHs(sv_2mortal(newSVpv(eps.c_str(),eps.length())));
+
+	PUTBACK;
+
+	call_pv("delete_episode", G_DISCARD);
+
+	SPAGAIN;
+	
+	FREETMPS;
+	LEAVE;
+}

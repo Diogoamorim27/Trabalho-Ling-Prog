@@ -8,6 +8,6 @@
 
 using namespace std;
 
-void deleteEpisode(Episode);
+void deleteEpisode(Episode, string);
 
 #endif

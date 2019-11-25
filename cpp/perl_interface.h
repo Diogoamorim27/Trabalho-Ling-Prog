@@ -17,7 +17,7 @@ class PerlInterface {
 		vector <string> call_perl_function_hash(string, string);
 		string call_perl_function_string(string, string, string, string);
 		string normalize_string(string);
-				
+		void delete_episode(string, string);
 
 	private:
 		PerlInterpreter *my_perl;

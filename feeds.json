@@ -1,7 +1,17 @@
 [
    {
-      "language" : "en",
       "url" : "https://rss.acast.com/vicegamingsnewpodcast",
-      "title" : "Waypoint Radio"
+      "title" : "Waypoint Radio",
+      "language" : "en"
+   },
+   {
+      "url" : "https://www.npr.org/rss/podcast.php?id=510318",
+      "title" : "Up First",
+      "language" : "en-us"
+   },
+   {
+      "title" : "Decrépitos",
+      "url" : "https://decrepitos.com/podcast/feed.xml",
+      "language" : "pt-BR"
    }
 ]
