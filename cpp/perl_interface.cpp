@@ -49,27 +49,60 @@ void PerlInterface::interpreter() {
 	perl_run(my_perl);
 }
 
-void PerlInterface::add_feed(string url, string feed_xml) {
+string PerlInterface::add_feed(string url, string feed_xml) {
 	dSP;
 	ENTER;
 	SAVETMPS;
 	PUSHMARK(SP);
+
+	string normalized_title;
 
 	XPUSHs(sv_2mortal(newSVpv(url.c_str(),url.length())));
 	XPUSHs(sv_2mortal(newSVpv(feed_xml.c_str(),feed_xml.length())));
 
 	PUTBACK;
 
-	call_pv("add_feed", G_DISCARD);
+	call_pv("add_feed", G_SCALAR);
 
 	SPAGAIN;
+
+	SV *sv = POPs;
+	normalized_title = SvPV_nolen(sv);
+
 	PUTBACK;
 	FREETMPS;
 	LEAVE;
+
+	return normalized_title;
 }
 
 //void PerlInteface::call_perl_funnction_void(string, string, string, string, string, string){};
-		
+
+string PerlInterface::normalize_string(string str) {
+	dSP;
+	ENTER;
+	SAVETMPS;
+	PUSHMARK(SP);
+
+	string return_str;
+
+	XPUSHs(sv_2mortal(newSVpv(str.c_str(),str.length())));
+
+	PUTBACK;
+
+	call_pv("add_feed", G_SCALAR);
+
+	SPAGAIN;
+	
+	return_str = SvPV_nolen(POPs);
+
+	FREETMPS;
+	LEAVE;
+
+	return return_str;
+
+}
+
 vector <string> PerlInterface::call_perl_function_hash(string function, string feed_name){
 	dSP;	
 	int i;

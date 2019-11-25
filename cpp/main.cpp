@@ -7,6 +7,7 @@
 #include <vector>
 #include <stdexcept>
 #include <fstream>
+#include <stdio.h>
 
 #include "perl_interface.h"
 #include "downloadFeed.h"
@@ -33,8 +34,11 @@ int main (int argc, char** argv) {
 
 	int choice = callMenu(options);
 	
+	string move_file_command;
+	string new_feed_path;
 	string feed_url;	
 	string feed_name;
+	string feed_nrm_title;
 	string temp_feed_name;
 	vector <string> feeds_string;
 	vector <string> feed_titles;
@@ -60,7 +64,19 @@ int main (int argc, char** argv) {
                             cerr << "Error creating file: " << e.what()
                                  << "\nUnable to add feed.\n";
                         }
-			perl.add_feed(feed_url, temp_feed_name); //cria diretorio do feed e adiciona no json
+			feed_nrm_title = perl.add_feed(feed_url, temp_feed_name); //cria diretorio do feed e adiciona no json
+	
+			new_feed_path = ".feeds/" + feed_nrm_title + "/" + feed_nrm_title + ".xml";
+
+			//
+		//move_file_command = "mv " + temp_feed_name + " .feeds/" + feed_nrm_title + "/" + feed_nrm_title + ".xml";
+		//	cout<<move_file_command<<endl;
+		//	system(move_file_command.c_str());
+			
+			cout<<temp_feed_name<<endl;
+			cout<<new_feed_path<<endl;
+			cout<<"could you rename? :"<<rename(temp_feed_name.c_str(), new_feed_path.c_str())<<endl;
+		
 			break;
 		
 		case 1: //atualizar feed
