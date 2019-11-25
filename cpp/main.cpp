@@ -68,14 +68,8 @@ int main (int argc, char** argv) {
 	
 			new_feed_path = ".feeds/" + feed_nrm_title + "/" + feed_nrm_title + ".xml";
 
-			//
-		//move_file_command = "mv " + temp_feed_name + " .feeds/" + feed_nrm_title + "/" + feed_nrm_title + ".xml";
-		//	cout<<move_file_command<<endl;
-		//	system(move_file_command.c_str());
-			
-			cout<<temp_feed_name<<endl;
-			cout<<new_feed_path<<endl;
-			cout<<"could you rename? :"<<rename(temp_feed_name.c_str(), new_feed_path.c_str())<<endl;
+			if (rename(temp_feed_name.c_str(), new_feed_path.c_str()))
+				showError("Não foi possível adicionar o feed");
 		
 			break;
 		
@@ -88,9 +82,8 @@ int main (int argc, char** argv) {
 				i += 3;
 			}
 			choice = callMenu(feed_titles);
-			cout << choice << endl;
+			
 			feed_url = feeds_string[choice*3];
-			cout << feed_url<<endl;
 			try {
 			    temp_feed_name = downloadFeed(feed_url); //baixa o arquivo xml do feed
                         }
@@ -102,7 +95,18 @@ int main (int argc, char** argv) {
                             cerr << "Error creating file: " << e.what()
                                  << "\nUnable to add feed.\n";
                         }
-			perl.add_feed(feed_url, temp_feed_name); //cria diretorio do feed e adiciona no json 
+		
+
+			feed_nrm_title = perl.normalize_string(feed_titles[choice]); //cria diretorio do feed e adiciona no json
+
+			new_feed_path = ".feeds/" + feed_nrm_title + "/" + feed_nrm_title + ".xml";
+
+			showError(feed_nrm_title);
+			showError(new_feed_path);
+			
+			if (rename(temp_feed_name.c_str(), new_feed_path.c_str()))
+				showError("Não foi possível atualizar o feed");
+
 			break;
 		
 		case 2: //baixar episodio
@@ -116,13 +120,14 @@ int main (int argc, char** argv) {
 			choice = callMenu(feed_titles);
 			feed_name = feed_titles[choice];
 			episodes_string = perl.call_perl_function_hash("get_episodes", feed_name);
-                    	i = 2;
-			while (i < feeds_string.size())
+                    	
+			i = 2;
+			while (i < episodes_string.size())
 			{
 				episode_titles.push_back(episodes_string[i]);
 				i += 3;
 			}
-			choice = callMenu(episode_titles);
+			choice = callScrollingMenu(episode_titles);
 
 		    break;
 		

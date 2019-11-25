@@ -90,11 +90,12 @@ string PerlInterface::normalize_string(string str) {
 
 	PUTBACK;
 
-	call_pv("add_feed", G_SCALAR);
+	call_pv("normalize_string", G_SCALAR);
 
 	SPAGAIN;
 	
-	return_str = SvPV_nolen(POPs);
+	SV *sv = POPs;
+	return_str = SvPV_nolen(sv);
 
 	FREETMPS;
 	LEAVE;
