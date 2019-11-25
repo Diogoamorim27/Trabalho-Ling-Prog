@@ -13,6 +13,7 @@ use utf8;
 use open qw(:std :encoding(UTF-8));
 use Encode qw( encode_utf8 );
 use Text::Unaccent::PurePerl;
+#use File::Copy;
 
 require Exporter;
 use AutoLoader;
@@ -170,7 +171,6 @@ sub add_feed
 {
 	my $url = $_[0];
 	my $temp_file_path = $_[1];
-
 	my %feed_data;
 
 	%feed_data = parse_feed($temp_file_path);
@@ -200,10 +200,11 @@ sub add_feed
 		$cli_command = "mkdir .feeds/".$normalized_title."/eps";
 		system($cli_command); #create downloaded episodes directory
 	}
- 
-	$cli_command = "mv ".$temp_file_path." .feeds/".$normalized_title."/".$normalized_title.".xml";
-	system($cli_command); #changes temporary *.xml file to correct name and moves it to feed directory;
 
+	#	my $new_file_path = " .feeds/".$normalized_title."/".$normalized_title.".xml";
+	#	move($temp_file_path,$new_file_path); #changes temporary *.xml file to correct name and moves it to feed directory;
+
+	return $normalized_title;
 }
 
 sub delete_episode 
@@ -659,7 +660,7 @@ sub search_episodes{
 }
 
 sub call_perl_function_hash {
-    if ($_[0] == "get_episodes") {
+    if ($_[0] eq "get_episodes") {
         my @get_episodes = get_episodes($_[1]);
         my @get_episodes_str;
         my $j = 0;
@@ -671,7 +672,7 @@ sub call_perl_function_hash {
         }
         return @get_episodes_str;
     }
-    if ($_[0] == "get_dowloaded_episodes_from_feed") {
+    if ($_[0] eq "get_dowloaded_episodes_from_feed") {
         my @get_downloaded_episodes = @{get_downloaded_episodes_from_feed($_[1], $_[2])};
         my @get_downloaded_episodes_str;
         my $j = 0;
@@ -683,7 +684,7 @@ sub call_perl_function_hash {
         }
         return @get_downloaded_episodes_str;
     }
-    if ($_[0] == "get_feeds") {
+    if ($_[0] eq "get_feeds") {
         my @get_feeds = get_feeds($_[1]);
         my @get_feeds_str;
         my $j = 0;
@@ -695,7 +696,7 @@ sub call_perl_function_hash {
         }
         return @get_feeds_str;
     }
-    if ($_[0] == "search_episodes") {
+    if ($_[0] eq "search_episodes") {
         my @search_episodes = search_episodes($_[1], $_[2]);
         my @search_episodes_str;
         my $j = 0;
@@ -707,7 +708,7 @@ sub call_perl_function_hash {
         }
         return @search_episodes_str;
     }
-    if ($_[0] == "get_new_episodes") {
+    if ($_[0] eq "get_new_episodes") {
         my @get_new_episodes = @{get_new_episodes($_[1])};
         my @get_new_episodes_str;
         my $j = 0;
@@ -723,7 +724,7 @@ sub call_perl_function_hash {
 }
 
 sub call_perl_function_string {
-    if ($_[0] == "generate_episode_file_path") {
+    if ($_[0] eq "generate_episode_file_path") {
         my %episode;
         $episode{title} = $_[2];
         $episode{url} = $_[3];
@@ -733,7 +734,7 @@ sub call_perl_function_string {
 }
 
 sub call_perl_function_void {
-    if ($_[0] == "add_episode_to_json") {
+    if ($_[0] eq "add_episode_to_json") {
         my %episode;
         $episode{title} = $_[3];
         $episode{date} = $_[4];

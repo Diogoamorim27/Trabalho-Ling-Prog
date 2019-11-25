@@ -13,6 +13,7 @@ use utf8;
 use open qw(:std :encoding(UTF-8));
 use Encode qw( encode_utf8 );
 use Text::Unaccent::PurePerl;
+#use File::Copy;
 
 require Exporter;
 use AutoLoader;
@@ -170,7 +171,6 @@ sub add_feed
 {
 	my $url = $_[0];
 	my $temp_file_path = $_[1];
-
 	my %feed_data;
 
 	%feed_data = parse_feed($temp_file_path);
@@ -191,7 +191,7 @@ sub add_feed
 	{
 		$cli_command = "mkdir .feeds/".$normalized_title;
 		system($cli_command); #create feed directory
-		
+	
 		append_feed(%feed_data);
 	}
 
@@ -200,10 +200,11 @@ sub add_feed
 		$cli_command = "mkdir .feeds/".$normalized_title."/eps";
 		system($cli_command); #create downloaded episodes directory
 	}
- 
-	$cli_command = "mv ".$temp_file_path." .feeds/".$normalized_title."/".$normalized_title.".xml";
-	system($cli_command); #changes temporary *.xml file to correct name and moves it to feed directory;
 
+	#	my $new_file_path = " .feeds/".$normalized_title."/".$normalized_title.".xml";
+	#	move($temp_file_path,$new_file_path); #changes temporary *.xml file to correct name and moves it to feed directory;
+
+	return $normalized_title;
 }
 
 sub delete_episode 
