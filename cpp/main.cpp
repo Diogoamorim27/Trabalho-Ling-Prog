@@ -14,8 +14,10 @@
 #include "vector2.h"
 #include "ui.h"
 #include "episode.h"
+#include "feed.h"
 #include "downloadEpisode.h"
 #include "deleteEpisode.h"
+#include "deleteFeed.h"
 
 using namespace std;
 
@@ -50,6 +52,7 @@ int main (int argc, char** argv) {
 	unsigned i;
 
 	Episode ep_dl("","","","");
+	Feed feed_dl("","","");
 	
 	while(choice != 7)
 	{
@@ -57,6 +60,7 @@ int main (int argc, char** argv) {
 		feeds_string.clear();
 		episodes_string.clear();
 		episode_titles.clear();
+		feed_nrm_title = "";
 
 	switch (choice)
 	{
@@ -205,6 +209,33 @@ ep_dl.setTitle(episode_titles[choice]);
 			break;
 		
 		case 4:
+			feeds_string = perl.call_perl_function_hash("get_feeds", "./feeds.json");
+			
+			i = 2;
+			while (i < feeds_string.size())
+			{
+				feed_titles.push_back(feeds_string[i]);
+				i += 3;
+			}
+			choice = callMenu(feed_titles);
+			if (choice == -1)
+			{
+				showError("Não há feeds disponíveis");
+				break;
+			}
+			
+			feed_dl.setTitle(feed_titles[choice]);
+			feed_dl.setUrl(feeds_string[choice*3]);
+			feed_dl.setLanguage(feeds_string[choice*3 + 1]);
+	
+			feed_nrm_title = perl.normalize_string(feed_dl.getTitle());
+			
+			deleteFeed(feed_dl, feed_nrm_title);
+
+			perl.delete_feed(feed_dl.getTitle());
+		
+			break;
+
 		break;
 		
 		case 5:

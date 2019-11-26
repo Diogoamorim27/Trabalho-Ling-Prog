@@ -12,13 +12,15 @@ class PerlInterface {
 		~PerlInterface();
 		void interpreter();
 
-		string add_feed(string, string);
-		void call_perl_function_void(string, string, string, string);
 		vector <string> call_perl_function_hash(string, string);
-		string call_perl_function_string(string, string, string, string);
-		string normalize_string(string);
-		void delete_episode(string, string);
 
+		string call_perl_function_string(string, string, string, string);
+		string add_feed(string, string);
+		string normalize_string(string);
+
+		void delete_episode(string, string);
+		void delete_feed(string);
+		void call_perl_function_void(string, string, string, string);
 	private:
 		PerlInterpreter *my_perl;
 		char *my_argv[2];
