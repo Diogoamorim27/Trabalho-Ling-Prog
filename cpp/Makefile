@@ -1,6 +1,6 @@
 #g++ -Wall -std=c++11 -I cpr/include/ -L cpr/build/lib/ addFeed.cpp addFeedTest.cpp -lcpr -lcurl -lgtest -lgtest_main -lmongoose -ltest_server -o addFeedTest
 CPP = g++
-CPPFLAGS = -Wall -std=c++11 `perl -MExtUtils::Embed -e ccopts -e ldopts` 
+CPPFLAGS = -Wall -std=c++11 -O `perl -MExtUtils::Embed -e ccopts -e ldopts` 
 
 LD = g++
 LDFLAGS = -Wall -std=c++11
