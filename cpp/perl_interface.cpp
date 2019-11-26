@@ -209,3 +209,27 @@ void PerlInterface::delete_episode(string feed_name, string episode_name) {
 	FREETMPS;
 	LEAVE;
 }
+
+void PerlInterface::delete_feed(string feed) {
+	dSP;
+	ENTER;
+	SAVETMPS;
+	PUSHMARK(SP);
+
+	string eps = "./episodes.json";
+	string feeds = "./feeds.json";
+
+	XPUSHs(sv_2mortal(newSVpv(feed.c_str(),feed.length())));
+	XPUSHs(sv_2mortal(newSVpv(eps.c_str(),eps.length())));
+	XPUSHs(sv_2mortal(newSVpv(feeds.c_str(),feeds.length())));
+
+	PUTBACK;
+
+	call_pv("delete_feed", G_DISCARD);
+
+	SPAGAIN;
+	
+	FREETMPS;
+	LEAVE;
+
+}

@@ -19,6 +19,10 @@ class Feed {
         vector<Episode *> getEpisodes();
         void addEpisode(Episode *);
 
+	void setTitle(string);
+	void setUrl(string);
+	void setLanguage(string);
+
     private:
         string title;
         string language;

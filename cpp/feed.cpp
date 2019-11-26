@@ -9,9 +9,22 @@ using namespace std;
 Feed::Feed(string title, string language, string url) : title (title), language (language), url (url) {
 }
 
+void Feed::setTitle(string t){
+	title = t;
+}
+
+void Feed::setUrl(string u){
+	url = u;
+}
+
+void Feed::setLanguage(string l){
+	language = l;
+}
+
+
 Feed::~Feed() {
     if (!episodes.empty()){
-        for (int i = 0; i < episodes.size(); i++)
+        for (long unsigned int i = 0; i < episodes.size(); i++)
             delete episodes.at(i);
         episodes.clear();
     }
