@@ -25,60 +25,6 @@ int init() {
 
 int callMenu(vector <string> options) {
 	// create a window for the menu
-	WINDOW * menuwin = newwin(12, screenSize.x - 6, screenSize.y-12, 5);
-	box(menuwin, 0, 0);
-	refresh();
-	curs_set(0);
-	wrefresh(menuwin);
-
-
-	//makes it so we can use arrow keys
-	keypad(menuwin, true);
-
-	int choice;
-	int highlight = 0;
-	int size = options.size();
-	string url;
-
-	while(1) 
-	{
-		for(int i = 0; i<size; i++)
-		{
-			if (i == highlight) 
-			{
-				wattron(menuwin, A_REVERSE);
-
-			}
-			mvwprintw(menuwin, i+1, 1, options[i].c_str());
-			wattroff(menuwin,  A_REVERSE);
-		}
-		choice = wgetch(menuwin);
-
-		switch(choice)
-		{
-			case KEY_UP:
-				if (highlight > 0)
-					highlight--;
-				break;
-			case KEY_DOWN:
-				if (highlight < size - 1)
-					highlight++;
-				break;
-			default:
-				break;
-		}
-		
-		if (choice == 10)
-			break;
-	}
-	clear();
-	refresh();
-	endwin();
-	return highlight;
-}
-
-int callScrollingMenu(vector <string> options) {
-	// create a window for the menu
 	WINDOW * menuwin = newwin(screenSize.y-4, screenSize.x - 6, 2, 5);
 	box(menuwin, 0, 0);
 	refresh();
@@ -92,66 +38,73 @@ int callScrollingMenu(vector <string> options) {
 	int choice;
 	int highlight = 0;
 	int size = options.size();
-	string url;
-
 	int offset = 0;
+	string url;
+	bool scrolling = false;
 
-	int max_scr = screenSize.y-6 ;
-	int screen_limit = std::max(size, max_scr);
+	if (size > screenSize.y - 6) 
+	{		
+		size = screenSize.y - 6;
+		scrolling = true;
+	}
 
 	while(1) 
 	{
-		for(int i = 0; i < screen_limit; i++)
+
+
+		for(int i = 0; i<size; i++)
 		{
 			if (i == highlight) 
 			{
 				wattron(menuwin, A_REVERSE);
 
-			}
-			if (i+offset <= options.size())
-				mvwprintw(menuwin, i+1, 1, options[i+offset].c_str());
-			else
-				mvwprintw(menuwin, i+1, 1, options[i].c_str());
-					
+			}			
+			mvwprintw(menuwin, i+1, 1, options[i+offset].c_str());
+			wclrtoeol(menuwin);
 			wattroff(menuwin,  A_REVERSE);
+			box(menuwin, 0, 0);
 		}
 		choice = wgetch(menuwin);
-
-
 
 		switch(choice)
 		{
 			case KEY_UP:
 				if (highlight > 0)
 					highlight--;
-				else if (offset > 0) 
-				{
+				else if (offset > 0 && scrolling == true) 
+				{	
 					offset--;
+					erase();
+					refresh();
 				}
+								
 				break;
 			case KEY_DOWN:
-				if (highlight < (screenSize.y - 7))
+				if (highlight < screenSize.y - 4 && highlight < size - 1)
 					highlight++;
-				else if (offset < size)		
+				else if (offset < size -1  && scrolling == true)		
 				{
-					offset++;
+					offset++;	
+					erase();
+					refresh();
+
 				}
 
 				break;
 			default:
 				break;
 		}
-	
+
 
 		if (choice == 10)
 			break;
 	}
-
 	clear();
 	refresh();
 	endwin();
-	return highlight;
+	return highlight + offset;
 }
+
 
 string getInput(string prompt) {
 	// create a window for the prompt
@@ -160,7 +113,8 @@ string getInput(string prompt) {
 	refresh();
 	keypad(promptwin, true);
 	wrefresh(promptwin);
-	
+	noecho();
+
 	mvwprintw(promptwin, 1, 1, prompt.c_str());
 	wattroff(promptwin,  A_REVERSE);
 
@@ -171,7 +125,7 @@ string getInput(string prompt) {
 
 	while( ch != '\n')
 	{
-		if (ch == 127)
+		if (ch == 127 | ch == KEY_BACKSPACE)
 		{
 			clear();	
 			if (!input.empty())

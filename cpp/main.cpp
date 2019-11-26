@@ -80,7 +80,9 @@ int main (int argc, char** argv) {
 			break;
 		
 		case 1: //atualizar feed
+			
 			feeds_string = perl.call_perl_function_hash("get_feeds", "./feeds.json");
+			
 			i = 2;
 			while (i < feeds_string.size())
 			{
@@ -101,23 +103,20 @@ int main (int argc, char** argv) {
                             cerr << "Error creating file: " << e.what()
                                  << "\nUnable to add feed.\n";
                         }
-		
-
-			feed_nrm_title = perl.normalize_string(feed_titles[choice]); //cria diretorio do feed e adiciona no json
-
+			
+			feed_nrm_title = perl.add_feed(feed_url, temp_feed_name); //cria diretorio do feed e adiciona no json
+	
 			new_feed_path = ".feeds/" + feed_nrm_title + "/" + feed_nrm_title + ".xml";
 
-			showError(feed_nrm_title);
-			showError(new_feed_path);
-			
 			if (rename(temp_feed_name.c_str(), new_feed_path.c_str()))
-				showError("Não foi possível atualizar o feed");
-
+				showError("Não foi possível adicionar o feed");
+		
 			break;
 		
 		case 2: //baixar episodio
 			feeds_string = perl.call_perl_function_hash("get_feeds", "./feeds.json");
 			i = 2;
+			feed_titles.clear();
 			while (i < feeds_string.size())
 			{
 				feed_titles.push_back(feeds_string[i]);
@@ -126,8 +125,6 @@ int main (int argc, char** argv) {
 			choice = callMenu(feed_titles);
 			feed_name = feed_titles[choice];
 			episodes_string = perl.call_perl_function_hash("get_episodes", feed_name);
-                   	
-//			callScrollingMenu(episodes_string);
 
 			i = 2;
 			while (i < episodes_string.size())
@@ -135,7 +132,7 @@ int main (int argc, char** argv) {
 				episode_titles.push_back(episodes_string[i]);
 				i += 3;
 			}
-			choice = callScrollingMenu(episode_titles);
+			choice = callMenu(episode_titles);
 			ep_dl.setTitle(episode_titles[choice]);
 			ep_dl.setUrl(episodes_string[choice*3]);
 			ep_dl.setDate(episodes_string[choice*3 + 1]);
@@ -144,8 +141,10 @@ int main (int argc, char** argv) {
 			episode_file_path = perl.call_perl_function_string("generate_episode_file_path", feed_name, ep_dl.getTitle(), ep_dl.getUrl());
 
 			cout << episode_file_path <<endl;
-			downloadEpisode(ep_dl, episode_file_path);
-			
+			//downloadEpisode(ep_dl, episode_file_path);
+	
+			perl.call_perl_function_void(ep_dl.getFeedTitle(), ep_dl.getTitle(), ep_dl.getDate(), ep_dl.getUrl());	
+
 			break;
 		
 		case 3:

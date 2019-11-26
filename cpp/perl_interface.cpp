@@ -76,7 +76,30 @@ string PerlInterface::add_feed(string url, string feed_xml) {
 	return normalized_title;
 }
 
-//void PerlInteface::call_perl_funnction_void(string, string, string, string, string, string){};
+void PerlInterface::call_perl_function_void(string feed, string title, string date, string url){
+	dSP;
+	ENTER;
+	SAVETMPS;
+	PUSHMARK(SP);
+
+	string eps = "./episodes.json";
+	string function = "add_episode_to_json";
+	
+	XPUSHs(sv_2mortal(newSVpv(function.c_str(),function.length())));
+	XPUSHs(sv_2mortal(newSVpv(feed.c_str(),feed.length())));
+	XPUSHs(sv_2mortal(newSVpv(eps.c_str(),eps.length())));
+	XPUSHs(sv_2mortal(newSVpv(title.c_str(),title.length())));
+	XPUSHs(sv_2mortal(newSVpv(date.c_str(),date.length())));
+	XPUSHs(sv_2mortal(newSVpv(url.c_str(),url.length())));
+
+	PUTBACK;
+
+	call_pv("call_perl_function_void", G_DISCARD);
+	
+	FREETMPS;
+	LEAVE;
+
+};
 
 string PerlInterface::normalize_string(string str) {
 	dSP;
@@ -170,8 +193,6 @@ void PerlInterface::delete_episode(string feed_name, string episode_name) {
 	ENTER;
 	SAVETMPS;
 	PUSHMARK(SP);
-
-	string return_str;
 
 	string eps = "./episodes.json";
 
