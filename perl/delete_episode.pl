@@ -15,7 +15,7 @@ sub delete_episode
 	my $episode_name = $_[1];
 	my $feed_name = $_[0];
 	my $episodes_json_path = $_[2];
-
+ 
 	#print Dumper(\%episode_data{"title"});
 
 	my $file_contents = File::Slurper::read_text($episodes_json_path);

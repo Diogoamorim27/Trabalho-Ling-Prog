@@ -1,13 +1,13 @@
 #include <string>
 #include <ncurses.h>
 #include <iostream>
-#include <stdlib.h>
+#include <cstdlib>
 #include <EXTERN.h>
 #include <perl.h>
 #include <vector>
 #include <stdexcept>
 #include <fstream>
-#include <stdio.h>
+#include <cstdio>
 
 #include "perl_interface.h"
 #include "downloadFeed.h"
@@ -47,7 +47,7 @@ int main (int argc, char** argv) {
 	vector <string> feed_titles;
 	vector <string> episodes_string;
 	vector <string> episode_titles;
-	int i;
+	unsigned i;
 
 	Episode ep_dl("","","","");
 	
