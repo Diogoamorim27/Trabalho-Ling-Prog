@@ -129,7 +129,7 @@ string getInput(string prompt) {
 
 	while( ch != '\n')
 	{
-		if (ch == 127 | ch == KEY_BACKSPACE)
+		if ((ch == 127) || (ch == KEY_BACKSPACE))
 		{
 			clear();	
 			if (!input.empty())
