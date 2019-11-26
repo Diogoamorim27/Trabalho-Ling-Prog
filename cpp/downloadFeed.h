@@ -10,7 +10,7 @@ using namespace std;
 
 void generateRandomString(string &, const int);
 
-string downloadFeed(string feedUrl);
+string downloadFeed(string, string &);
 
 size_t writeFunction(void *, size_t, size_t, string *);
 
