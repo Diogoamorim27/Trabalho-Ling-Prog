@@ -1,12 +1,7 @@
 [
    {
-      "title" : "Welcome to Night Vale",
-      "language" : "en",
-      "url" : "http://feeds.nightvalepresents.com/welcometonightvalepodcast?format=xml"
-   },
-   {
-      "title" : "Waypoint Radio",
-      "url" : "https://rss.acast.com/vicegamingsnewpodcast",
-      "language" : "en"
+      "title" : "Up First",
+      "language" : "en-us",
+      "url" : "https://www.npr.org/rss/podcast.php?id=510318"
    }
 ]

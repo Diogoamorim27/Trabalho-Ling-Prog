@@ -8,6 +8,6 @@
 
 using namespace std;
 
-void deleteFeed(Feed);
+void deleteFeed(Feed, string);
 
 #endif

@@ -7,8 +7,7 @@
 
 using namespace std;
 
-void deleteFeed(Feed feed) {
-    string feedDirectory;
+void deleteFeed(Feed feed, string feedDirectory) {
     string removeDirectory = "rm -rf ";
 
     feedDirectory = ".feeds/" + feedDirectory;

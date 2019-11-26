@@ -60,6 +60,7 @@ int main (int argc, char** argv) {
 		feeds_string.clear();
 		episodes_string.clear();
 		episode_titles.clear();
+		feed_nrm_title = "";
 
 	switch (choice)
 	{
@@ -227,7 +228,9 @@ ep_dl.setTitle(episode_titles[choice]);
 			feed_dl.setUrl(feeds_string[choice*3]);
 			feed_dl.setLanguage(feeds_string[choice*3 + 1]);
 	
-			deleteFeed(feed_dl);
+			feed_nrm_title = perl.normalize_string(feed_dl.getTitle());
+			
+			deleteFeed(feed_dl, feed_nrm_title);
 
 			perl.delete_feed(feed_dl.getTitle());
 		
