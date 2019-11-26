@@ -11,6 +11,7 @@ use File::Slurper;
 use Data::Dumper; #debugging
 use utf8;
 use open qw(:std :encoding(UTF-8));
+use Encode;
 use Encode qw( encode_utf8 );
 use Text::Unaccent::PurePerl;
 #use File::Copy;
@@ -225,6 +226,7 @@ sub delete_episode
 	eval {%feeds_in_file = %{decode_json($file_contents)}}; 
 
 	if (!($@ eq "")) {
+		print "i shan't be printed!";
 		return $@;
 	} else {
 
@@ -360,7 +362,7 @@ sub generate_episode_file_path
 
 sub get_downloaded_episodes_from_feed
 {
-	my $feed_name = $_[0];
+	my $feed_name = decode_utf8($_[0]);
 	my $episodes_json_path = $_[1];
 
 
@@ -661,7 +663,7 @@ sub search_episodes{
 
 sub call_perl_function_hash {
     if ($_[0] eq "get_episodes") {
-        my @get_episodes = get_episodes($_[1]);
+        my @get_episodes = get_episodes(decode_utf8($_[1]));
         my @get_episodes_str;
         my $j = 0;
         for my $i (0 .. $#get_episodes) {
@@ -672,8 +674,8 @@ sub call_perl_function_hash {
         }
         return @get_episodes_str;
     }
-    if ($_[0] eq "get_dowloaded_episodes_from_feed") {
-        my @get_downloaded_episodes = @{get_downloaded_episodes_from_feed($_[1], $_[2])};
+    if ($_[0] eq "get_downloaded_episodes_from_feed") {
+        my @get_downloaded_episodes = @{get_downloaded_episodes_from_feed($_[1], "episodes.json")};
         my @get_downloaded_episodes_str;
         my $j = 0;
         for my $i (0 .. $#get_downloaded_episodes) {
@@ -728,7 +730,7 @@ sub call_perl_function_string {
         my %episode;
         $episode{title} = $_[2];
         $episode{url} = $_[3];
-        return generate_episode_file_path($_[1], \%episode);
+        return generate_episode_file_path(decode_utf8($_[1]), \%episode);
     }
     warn "Unknown function.\n";
 }
@@ -741,7 +743,7 @@ sub call_perl_function_void {
         $episode{url} = $_[5];
         add_episode_to_json($_[1], \%episode, $_[2]);
     }
-    warn "Unknown function.\n";
+    else {warn "Unknown function.\n";}
 }
 
 
