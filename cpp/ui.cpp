@@ -25,6 +25,10 @@ int init() {
 
 int callMenu(vector <string> options) {
 	// create a window for the menu
+	
+	if (options == NULL)
+		return -1;
+
 	WINDOW * menuwin = newwin(screenSize.y-4, screenSize.x - 6, 2, 5);
 	box(menuwin, 0, 0);
 	refresh();
