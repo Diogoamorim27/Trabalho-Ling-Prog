@@ -346,46 +346,11 @@ ep_dl.setTitle(episode_titles[choice]);
 				showError("Não há feeds disponíveis");
 				break;
 			}
-					
-			i = 2;
-			while (i < feeds_string.size())
-			{
-				if (feeds_string[i-1] == languages_string[choice])
-					filtered_feeds_string.push_back(feeds_string[i]);
-				i += 3;
-			}
-
-			choice == callMenu(filtered_feeds_string);
 			
-			episodes_string = perl.call_perl_function_hash("get_episodes", filtered_feeds_string[choice]);
-
-			i = 2;
-			while (i < episodes_string.size())
-			{
-				episode_titles.push_back(episodes_string[i]);
-				i += 3;
-			}
-			if (episode_titles.empty())
-				break;
-			choice = callMenu(episode_titles);
-			if (choice == -1)
-			{
-				showError("Não há episódios disponíveis");
-				break;
-			}
-			ep_dl.setTitle(episode_titles[choice]);
-			ep_dl.setUrl(episodes_string[choice*3]);
-			ep_dl.setDate(episodes_string[choice*3 + 1]);
-			ep_dl.setFeedTitle(feed_name);
-		       	
-			episode_file_path = perl.call_perl_function_string("generate_episode_file_path", feed_name, ep_dl.getTitle(), ep_dl.getUrl());
-
-			downloadEpisode(ep_dl, episode_file_path);
-	
-			perl.call_perl_function_void(ep_dl.getFeedTitle(), ep_dl.getTitle(), ep_dl.getDate(), ep_dl.getUrl());	
 
 
-			break;
+
+		break;
 		
 		case 8: //procurar novos episódios
 			feeds_string = perl.call_perl_function_hash("get_feeds", "./feeds.json");
