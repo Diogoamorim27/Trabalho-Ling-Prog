@@ -74,7 +74,6 @@ string downloadFeed(string feedUrl, string &error) {
                 error = error + errbuf;
             else
                 error = error + curl_easy_strerror(res);
-            cout << error << endl;
         }
         curl_easy_cleanup(curl);
         curl = NULL;

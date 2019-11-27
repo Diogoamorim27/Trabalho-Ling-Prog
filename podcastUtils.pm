@@ -210,8 +210,8 @@ sub add_feed
 
 sub delete_episode 
 {
-	my $episode_name = $_[1];
-	my $feed_name = $_[0];
+	my $episode_name = decode_utf8($_[1]);
+	my $feed_name = decode_utf8($_[0]);
 	my $episodes_json_path = $_[2];
 
 
@@ -262,7 +262,7 @@ sub delete_episode
 sub delete_feed
 {
 
-	my $feed_name = $_[0];
+	my $feed_name = decode_utf8($_[0]);
 	my $episodes_json_path = $_[1];
 	my $feeds_json_path = $_[2];
 

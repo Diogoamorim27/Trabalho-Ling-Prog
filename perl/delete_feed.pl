@@ -13,7 +13,7 @@ require "./perl/normalize_string.pl";
 sub delete_feed
 {
 
-	my $feed_name = $_[0];
+	my $feed_name = decode_utf8($_[0]);
 	my $episodes_json_path = $_[1];
 	my $feeds_json_path = $_[2];
 
