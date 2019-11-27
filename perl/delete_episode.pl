@@ -12,8 +12,8 @@ require "./perl/normalize_string.pl";
 
 sub delete_episode 
 {
-	my $episode_name = $_[1];
-	my $feed_name = $_[0];
+	my $episode_name = decode_utf8($_[1]);
+	my $feed_name = decode_utf8($_[0]);
 	my $episodes_json_path = $_[2];
  
 	#print Dumper(\%episode_data{"title"});
