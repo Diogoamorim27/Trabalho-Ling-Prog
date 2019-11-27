@@ -8,6 +8,7 @@
 #include <stdexcept>
 #include <fstream>
 #include <cstdio>
+#include <algorithm>
 
 #include "perl_interface.h"
 #include "downloadFeed.h"
@@ -50,6 +51,7 @@ int main (int argc, char** argv) {
 	string episode_file_path;
 	string errString;
 	string termo_busca;
+	vector <string> languages_string;
 	vector <string> feeds_string;
 	vector <string> feed_titles;
 	vector <string> episodes_string;
@@ -64,6 +66,7 @@ int main (int argc, char** argv) {
 		feed_titles.clear();
 		feeds_string.clear();
 		episodes_string.clear();
+		languages_string.clear();
 		episode_titles.clear();
 		feed_nrm_title = "";
 
@@ -325,16 +328,17 @@ ep_dl.setTitle(episode_titles[choice]);
 			playEpisode(ep_dl, episode_file_path);
 		break;
 		
-		case 7:
+		case 7: //filtrar por idioma
 			feeds_string = perl.call_perl_function_hash("get_feeds", "./feeds.json");
 			
-			i = 2;
+			i = 1;
 			while (i < feeds_string.size())
 			{
-				feed_titles.push_back(feeds_string[i]);
+				if (std::find(languages_string.begin(), languages_string.end(), feeds_string[i]) == languages_string.end())
+					languages_string.push_back(feeds_string[i]);
 				i += 3;
 			}
-			choice = callMenu(feed_titles);
+			choice = callMenu(languages_string);
 			if (choice == -1)
 			{
 				showError("Não há feeds disponíveis");
@@ -352,7 +356,7 @@ ep_dl.setTitle(episode_titles[choice]);
 			
 			i = 2;
 			while (i < feeds_string.size())
-			{
+			{	
 				feed_titles.push_back(feeds_string[i]);
 				i += 3;
 			}
