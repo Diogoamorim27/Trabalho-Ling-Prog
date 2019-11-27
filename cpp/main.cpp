@@ -56,6 +56,7 @@ int main (int argc, char** argv) {
 	vector <string> feed_titles;
 	vector <string> episodes_string;
 	vector <string> episode_titles;
+	vector <string> filtered_feeds_string;
 	unsigned i;
 
 	Episode ep_dl("","","","");
@@ -68,6 +69,7 @@ int main (int argc, char** argv) {
 		episodes_string.clear();
 		languages_string.clear();
 		episode_titles.clear();
+		filtered_feeds_string.clear();
 		feed_nrm_title = "";
 
 	switch (choice)
@@ -345,9 +347,8 @@ ep_dl.setTitle(episode_titles[choice]);
 				break;
 			}
 			
-			feed_dl.setTitle(feed_titles[choice]);
-			feed_dl.setUrl(feeds_string[choice*3]);
-			feed_dl.setLanguage(feeds_string[choice*3 + 1]);
+
+
 
 		break;
 		
