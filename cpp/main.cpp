@@ -8,7 +8,7 @@
 #include <stdexcept>
 #include <fstream>
 #include <cstdio>
-#include <algorithm>
+//#include <algorithm>
 
 #include "perl_interface.h"
 #include "downloadFeed.h"
@@ -58,6 +58,8 @@ int main (int argc, char** argv) {
 	vector <string> episode_titles;
 	vector <string> filtered_feeds_string;
 	unsigned i;
+        unsigned j;
+        bool found = false;
 
 	Episode ep_dl("","","","");
 	Feed feed_dl("","","");
@@ -336,9 +338,14 @@ ep_dl.setTitle(episode_titles[choice]);
 			i = 1;
 			while (i < feeds_string.size())
 			{
-				if (std::find(languages_string.begin(), languages_string.end(), feeds_string[i]) == languages_string.end())
-					languages_string.push_back(feeds_string[i]);
-				i += 3;
+                                found = false;
+                                //if (find(languages_string.begin(), languages_string.end(), feeds_string[i]) == languages_string.end())
+                                for (j = 0; (j < languages_string.size()) || (found == true); j++)
+                                        if (feeds_string.at(i) == languages_string.at(j))
+                                                found = true;
+                                if (!found)
+                                        languages_string.push_back(feeds_string[i]);
+                                i += 3;
 			}
 			choice = callMenu(languages_string);
 			if (choice == -1)
