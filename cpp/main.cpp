@@ -59,7 +59,7 @@ int main (int argc, char** argv) {
 	Episode ep_dl("","","","");
 	Feed feed_dl("","","");
 	
-	while(choice != 7)
+	while(choice != 9)
 	{
 		feed_titles.clear();
 		feeds_string.clear();
@@ -379,14 +379,20 @@ ep_dl.setTitle(episode_titles[choice]);
 			choice = callMenu(episode_titles);
 
 
-			break;
+		break;
 		
+
+		case 9:
+
 		break;
 		default:
 		break;
+	
 	}
 
 	choice = callMenu(options);
+	if (choice == 9)
+		break;
 
 	}
 	//cout << input<<endl;

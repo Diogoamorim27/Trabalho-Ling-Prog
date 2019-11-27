@@ -149,7 +149,8 @@ string getInput(string prompt) {
 		ch = wgetch(promptwin);	
 	}
 	
-
+	clear();
+	refresh();
 	endwin();
 	return input;
 
