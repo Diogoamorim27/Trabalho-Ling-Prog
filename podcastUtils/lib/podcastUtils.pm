@@ -1,6 +1,6 @@
 package podcastUtils;
 
-use 5.030000;
+#use 5.030000;
 use strict;
 use warnings;
 use Carp;
@@ -12,8 +12,9 @@ use Data::Dumper; #debugging
 use utf8;
 use open qw(:std :encoding(UTF-8));
 use Encode;
-use Encode qw( encode_utf8 );
+use Encode qw( decode_utf8 );
 use Text::Unaccent::PurePerl;
+use Unicode::Collate;
 #use File::Copy;
 
 require Exporter;
@@ -210,8 +211,8 @@ sub add_feed
 
 sub delete_episode 
 {
-	my $episode_name = $_[1];
-	my $feed_name = $_[0];
+	my $episode_name = decode_utf8($_[1]);
+	my $feed_name = decode_utf8($_[0]);
 	my $episodes_json_path = $_[2];
 
 
@@ -262,7 +263,7 @@ sub delete_episode
 sub delete_feed
 {
 
-	my $feed_name = $_[0];
+	my $feed_name = decode_utf8($_[0]);
 	my $episodes_json_path = $_[1];
 	my $feeds_json_path = $_[2];
 
@@ -675,7 +676,7 @@ sub call_perl_function_hash {
         return @get_episodes_str;
     }
     if ($_[0] eq "get_downloaded_episodes_from_feed") {
-        my @get_downloaded_episodes = @{get_downloaded_episodes_from_feed($_[1], "episodes.json")};
+        my @get_downloaded_episodes = @{get_downloaded_episodes_from_feed(decode_utf8($_[1]), "episodes.json")};
         my @get_downloaded_episodes_str;
         my $j = 0;
         for my $i (0 .. $#get_downloaded_episodes) {
@@ -699,7 +700,7 @@ sub call_perl_function_hash {
         return @get_feeds_str;
     }
     if ($_[0] eq "search_episodes") {
-        my @search_episodes = search_episodes($_[1], $_[2]);
+        my @search_episodes = search_episodes(decode_utf8($_[1]), decode_utf8($_[2]));
         my @search_episodes_str;
         my $j = 0;
         for my $i (0 .. $#search_episodes) {
@@ -711,7 +712,7 @@ sub call_perl_function_hash {
         return @search_episodes_str;
     }
     if ($_[0] eq "get_new_episodes") {
-        my @get_new_episodes = @{get_new_episodes($_[1],"./episodes.json")};
+        my @get_new_episodes = @{get_new_episodes(decode_utf8($_[1]),"./episodes.json")};
         my @get_new_episodes_str;
         my $j = 0;
         for my $i (0 .. $#get_new_episodes) {
@@ -728,8 +729,8 @@ sub call_perl_function_hash {
 sub call_perl_function_string {
     if ($_[0] eq "generate_episode_file_path") {
         my %episode;
-        $episode{title} = $_[2];
-        $episode{url} = $_[3];
+        $episode{title} = decode_utf8($_[2]);
+        $episode{url} = decode_utf8($_[3]);
         return generate_episode_file_path(decode_utf8($_[1]), \%episode);
     }
     warn "Unknown function.\n";
@@ -738,10 +739,10 @@ sub call_perl_function_string {
 sub call_perl_function_void {
     if ($_[0] eq "add_episode_to_json") {
         my %episode;
-        $episode{title} = $_[3];
-        $episode{date} = $_[4];
-        $episode{url} = $_[5];
-        add_episode_to_json($_[1], \%episode, $_[2]);
+        $episode{title} = decode_utf8($_[3]);
+        $episode{date} = decode_utf8($_[4]);
+        $episode{url} = decode_utf8($_[5]);
+        add_episode_to_json(decode_utf8($_[1]), \%episode, $_[2]);
     }
     else {warn "Unknown function.\n";}
 }
