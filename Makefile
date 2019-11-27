@@ -9,16 +9,15 @@ O_FLAGS = -Wcpp
 
 MAIN_OBJS = cpp/main.o cpp/downloadFeed.o cpp/ui.o cpp/perl_interface.o cpp/episode.o cpp/downloadEpisode.o cpp/deleteEpisode.o cpp/feed.o cpp/deleteFeed.o cpp/playEpisode.o
 
-EXECS = main
-	#addFeedTest\
-	#deleteEpisodeTest
-	#downloadEpisodeTest
+EXECS = main #mvobjs
 
 .cpp.o:
 	$(CPP) $(CPPFLAGS) -c $<
 
 all: $(EXECS)
 
+mvobjs:
+	mv *.o cpp/
 main: $(MAIN_OBJS)
 	$(LD) $(LDFLAGS) -O $(O_FLAGS) -o $@ $(MAIN_OBJS) $(L_CPR)
 
