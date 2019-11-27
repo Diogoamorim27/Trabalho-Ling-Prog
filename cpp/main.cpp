@@ -148,6 +148,9 @@ int main (int argc, char** argv) {
 			if (feed_titles.empty())
 				break;
 			choice = callMenu(feed_titles);
+			
+			feed_name = feed_titles[choice];
+			
 			if (choice == -1)
 			{
 				showError("Não há feeds disponíveis");
@@ -172,6 +175,7 @@ int main (int argc, char** argv) {
 				showError("Não há episódios disponíveis");
 				break;
 			}
+			
 			ep_dl.setTitle(episode_titles[choice]);
 			ep_dl.setUrl(episodes_string[choice*3]);
 			ep_dl.setDate(episodes_string[choice*3 + 1]);
@@ -362,7 +366,9 @@ ep_dl.setTitle(episode_titles[choice]);
 				i += 3;
 			}
 
-			choice == callMenu(filtered_feeds_string);
+			choice = callMenu(filtered_feeds_string);
+
+			feed_name = filtered_feeds_string[choice];
 			
 			episodes_string = perl.call_perl_function_hash("get_episodes", filtered_feeds_string[choice]);
 
