@@ -711,7 +711,7 @@ sub call_perl_function_hash {
         return @search_episodes_str;
     }
     if ($_[0] eq "get_new_episodes") {
-        my @get_new_episodes = @{get_new_episodes($_[1])};
+        my @get_new_episodes = @{get_new_episodes($_[1],"./episodes.json")};
         my @get_new_episodes_str;
         my $j = 0;
         for my $i (0 .. $#get_new_episodes) {

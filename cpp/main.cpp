@@ -251,7 +251,7 @@ ep_dl.setTitle(episode_titles[choice]);
 			if (feed_titles.empty())
 				break;
 			choice = callMenu(feed_titles);
-feed_name = feed_titles[choice];
+			feed_name = feed_titles[choice];
 			episodes_string = perl.call_perl_function_hash("get_downloaded_episodes_from_feed", feed_name);
 
 			i = 2;
@@ -275,7 +275,40 @@ ep_dl.setTitle(episode_titles[choice]);
 			playEpisode(ep_dl, episode_file_path);
 		break;
 		
-		case 6:
+		case 6: //procurar novos episódios
+			feeds_string = perl.call_perl_function_hash("get_feeds", "./feeds.json");
+			
+			i = 2;
+			while (i < feeds_string.size())
+			{
+				feed_titles.push_back(feeds_string[i]);
+				i += 3;
+			}
+			choice = callMenu(feed_titles);
+			if (choice == -1)
+			{
+				showError("Não há feeds disponíveis");
+				break;
+			}
+		
+			feed_name = feed_titles[choice];
+			episodes_string = perl.call_perl_function_hash("get_new_episodes", feed_name);
+
+			i = 2;
+			while (i < episodes_string.size())
+			{
+				episode_titles.push_back(episodes_string[i]);
+				i += 3;
+			}
+	
+			if (episode_titles.empty())
+				break;
+				
+			choice = callMenu(episode_titles);
+
+
+			break;
+		
 		break;
 		default:
 		break;
