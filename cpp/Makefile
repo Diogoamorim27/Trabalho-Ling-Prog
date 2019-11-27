@@ -8,7 +8,7 @@ LDFLAGS = -Wall -std=c++11
 L_CPR = -lcurl -lncursesw `perl -MExtUtils::Embed -e ccopts -e ldopts` 
 O_FLAGS = -Wcpp
 
-MAIN_OBJS = main.o downloadFeed.o ui.o perl_interface.o episode.o downloadEpisode.o deleteEpisode.o feed.o deleteFeed.o
+MAIN_OBJS = main.o downloadFeed.o ui.o perl_interface.o episode.o downloadEpisode.o deleteEpisode.o feed.o deleteFeed.o playEpisode.o
 
 EXECS = main
 	#addFeedTest\

@@ -7,6 +7,6 @@
 
 using namespace std;
 
-void playEpisode(Episode);
+void playEpisode(Episode, string);
 
 #endif

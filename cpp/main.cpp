@@ -18,6 +18,7 @@
 #include "downloadEpisode.h"
 #include "deleteEpisode.h"
 #include "deleteFeed.h"
+#include "playEpisode.h"
 
 using namespace std;
 
@@ -45,6 +46,7 @@ int main (int argc, char** argv) {
 	string feed_nrm_title;
 	string temp_feed_name;
 	string episode_file_path;
+	string errString;
 	vector <string> feeds_string;
 	vector <string> feed_titles;
 	vector <string> episodes_string;
@@ -67,7 +69,7 @@ int main (int argc, char** argv) {
 		case 0 : //adicionar feed
 			feed_url = getInput("Insira a url do feed.\n");
                         try {
-			    temp_feed_name = downloadFeed(feed_url); //baixa o arquivo xml do feed
+			    temp_feed_name = downloadFeed(feed_url, errString); //baixa o arquivo xml do feed
                         }
                         catch (out_of_range &oor) {
                             cerr << "Out of Range Error: " << oor.what()
@@ -105,7 +107,7 @@ int main (int argc, char** argv) {
 
 			feed_url = feeds_string[choice*3];
 			try {
-			    temp_feed_name = downloadFeed(feed_url); //baixa o arquivo xml do feed
+			    temp_feed_name = downloadFeed(feed_url, errString); //baixa o arquivo xml do feed
                         }
                         catch (out_of_range &oor) {
                             cerr << "Out of Range Error: " << oor.what()
@@ -208,7 +210,7 @@ ep_dl.setTitle(episode_titles[choice]);
 			perl.delete_episode(feed_name, ep_dl.getTitle());
 			break;
 		
-		case 4:
+		case 4: //deletar feed
 			feeds_string = perl.call_perl_function_hash("get_feeds", "./feeds.json");
 			
 			i = 2;
@@ -238,8 +240,39 @@ ep_dl.setTitle(episode_titles[choice]);
 
 		break;
 		
-		case 5:
-		
+		case 5:// mostrar episódio
+			feeds_string = perl.call_perl_function_hash("get_feeds", "./feeds.json");
+			i = 2;
+			while (i < feeds_string.size())
+			{
+				feed_titles.push_back(feeds_string[i]);
+				i += 3;
+			}
+			if (feed_titles.empty())
+				break;
+			choice = callMenu(feed_titles);
+feed_name = feed_titles[choice];
+			episodes_string = perl.call_perl_function_hash("get_downloaded_episodes_from_feed", feed_name);
+
+			i = 2;
+			while (i < episodes_string.size())
+			{
+				episode_titles.push_back(episodes_string[i]);
+				i += 3;
+			}
+	
+			if (episode_titles.empty())
+				break;
+				
+			choice = callMenu(episode_titles);
+ep_dl.setTitle(episode_titles[choice]);
+			ep_dl.setUrl(episodes_string[choice*3]);
+			ep_dl.setDate(episodes_string[choice*3 + 1]);
+			ep_dl.setFeedTitle(feed_name);
+		       	
+			episode_file_path = perl.call_perl_function_string("generate_episode_file_path", feed_name, ep_dl.getTitle(), ep_dl.getUrl());
+
+			playEpisode(ep_dl, episode_file_path);
 		break;
 		
 		case 6:

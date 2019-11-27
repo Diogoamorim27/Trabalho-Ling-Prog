@@ -1,7 +1,12 @@
 [
    {
-      "title" : "Up First",
       "language" : "en-us",
+      "title" : "Up First",
       "url" : "https://www.npr.org/rss/podcast.php?id=510318"
+   },
+   {
+      "language" : "en",
+      "url" : "http://feeds.nightvalepresents.com/welcometonightvalepodcast?format=xml",
+      "title" : "Welcome to Night Vale"
    }
 ]
