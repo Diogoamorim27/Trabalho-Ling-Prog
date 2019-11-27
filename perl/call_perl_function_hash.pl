@@ -1,5 +1,8 @@
 use strict;
 use warnings;
+use utf8;
+use open qw(:std :encoding(UTF-8));
+use Encode qw( decode_utf8 );
 require "./perl/get_episodes.pl";
 require "./perl/get_downloaded_episodes.pl";
 require "./perl/get_feeds.pl";
@@ -10,7 +13,7 @@ require "./perl/search_episode.pl";
 # understand it.
 sub call_perl_function_hash {
     if ($_[0] eq "get_episodes") {
-        my @get_episodes = get_episodes($_[1]);
+        my @get_episodes = get_episodes(decode_utf8($_[1]));
         my @get_episodes_str;
         my $j = 0;
         for my $i (0 .. $#get_episodes) {
@@ -22,7 +25,7 @@ sub call_perl_function_hash {
         return @get_episodes_str;
     }
     if ($_[0] eq "get_dowloaded_episodes_from_feed") {
-        my @get_downloaded_episodes = @{get_downloaded_episodes_from_feed($_[1], $_[2])};
+        my @get_downloaded_episodes = @{get_downloaded_episodes_from_feed(decode_utf8($_[1]), "episodes.json")};
         my @get_downloaded_episodes_str;
         my $j = 0;
         for my $i (0 .. $#get_downloaded_episodes) {
@@ -46,7 +49,7 @@ sub call_perl_function_hash {
         return @get_feeds_str;
     }
     if ($_[0] eq "search_episodes") {
-        my @search_episodes = search_episodes($_[1], $_[2]);
+        my @search_episodes = search_episodes(decode_utf8($_[1]), decode_utf8($_[2]));
         my @search_episodes_str;
         my $j = 0;
         for my $i (0 .. $#search_episodes) {
@@ -58,7 +61,7 @@ sub call_perl_function_hash {
         return @search_episodes_str;
     }
     if ($_[0] eq "get_new_episodes") {
-        my @get_new_episodes = @{get_new_episodes($_[1])};
+        my @get_new_episodes = @{get_new_episodes(decode_utf8($_[1]))};
         my @get_new_episodes_str;
         my $j = 0;
         for my $i (0 .. $#get_new_episodes) {
