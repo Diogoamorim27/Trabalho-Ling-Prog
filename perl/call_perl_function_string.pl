@@ -1,5 +1,8 @@
 use strict;
 use warnings;
+use utf8;
+use open qw(:std :encoding(UTF-8));
+use Encode qw( decode_utf8 );
 require "./perl/generate_episode_file_path.pl";
 
 # This subroutine calls another perl subroutine that returns a string,
@@ -8,9 +11,9 @@ require "./perl/generate_episode_file_path.pl";
 sub call_perl_function_string {
     if ($_[0] == "generate_episode_file_path") {
         my %episode;
-        $episode{title} = $_[2];
-        $episode{url} = $_[3];
-        return generate_episode_file_path($_[1], \%episode);
+        $episode{title} = decode_utf8($_[2]);
+        $episode{url} = decode_utf8($_[3]);
+        return generate_episode_file_path(decode_utf8($_[1]), \%episode);
     }
     warn "Unknown function.\n";
 }
