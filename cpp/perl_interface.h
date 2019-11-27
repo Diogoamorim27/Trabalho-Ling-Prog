@@ -13,6 +13,7 @@ class PerlInterface {
 		void interpreter();
 
 		vector <string> call_perl_function_hash(string, string);
+		vector <string> search_episodes(string, string);
 
 		string call_perl_function_string(string, string, string, string);
 		string add_feed(string, string);

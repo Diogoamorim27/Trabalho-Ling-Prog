@@ -127,6 +127,40 @@ string PerlInterface::normalize_string(string str) {
 
 }
 
+vector <string> PerlInterface::search_episodes(string termo, string feed){
+	dSP;	
+	int i;
+	int count;
+	vector <string> func_return;
+	
+	string search_epi = "search_episodes";
+
+	ENTER;
+	SAVETMPS;
+	PUSHMARK(SP);
+
+
+	XPUSHs(sv_2mortal(newSVpv(search_epi.c_str(),search_epi.length())));
+	XPUSHs(sv_2mortal(newSVpv(feed.c_str(),feed.length())));
+	XPUSHs(sv_2mortal(newSVpv(termo.c_str(),termo.length())));
+
+	PUTBACK;
+
+	count = call_pv("call_perl_function_hash", G_ARRAY);
+
+	SPAGAIN;
+	
+	SV *sv;
+	for (i=0;i<count;i++) {
+		sv = POPs;
+		func_return.push_back(SvPV_nolen(sv));
+	}
+	FREETMPS;
+	LEAVE;
+
+	return func_return;
+}
+
 vector <string> PerlInterface::call_perl_function_hash(string function, string feed_name){
 	dSP;	
 	int i;

@@ -30,11 +30,13 @@ int main (int argc, char** argv) {
 	noecho();
 	vector <string> options = {	"Adicionar Feed",
                                         "Atualizar Feed",
-					"Baixar Episódio",
+					"Baixar Episódio - Busca",
+					"Baixar Episódio - Lista",
 					"Deletar Episódio",
 					"Excluir Feed",
-					"Mostrar Baixados",
-					"Procurar Novos Episódios",
+					"Ouvir Episódio",
+					"Filtrar por Idioma",
+					"Mostrar Novos Episódios",
        					"Sair"				};
 
 
@@ -47,6 +49,7 @@ int main (int argc, char** argv) {
 	string temp_feed_name;
 	string episode_file_path;
 	string errString;
+	string termo_busca;
 	vector <string> feeds_string;
 	vector <string> feed_titles;
 	vector <string> episodes_string;
@@ -127,7 +130,54 @@ int main (int argc, char** argv) {
 		
 			break;
 		
-		case 2: //baixar episodio
+		case 2: //buscar episódio
+			feeds_string = perl.call_perl_function_hash("get_feeds", "./feeds.json");
+			i = 2;
+			while (i < feeds_string.size())
+			{
+				feed_titles.push_back(feeds_string[i]);
+				i += 3;
+			}
+			if (feed_titles.empty())
+				break;
+			choice = callMenu(feed_titles);
+			if (choice == -1)
+			{
+				showError("Não há feeds disponíveis");
+				break;
+			}
+			
+			termo_busca = getInput("Insira o termo pelo qual deseja buscar");
+
+			episodes_string = perl.search_episodes(termo_busca, feed_titles[choice]);
+		
+			i = 2;
+			while (i < episodes_string.size())
+			{
+				episode_titles.push_back(episodes_string[i]);
+				i += 3;
+			}
+			if (episode_titles.empty())
+				break;
+			choice = callMenu(episode_titles);
+			if (choice == -1)
+			{
+				showError("Não há episódios disponíveis");
+				break;
+			}
+			ep_dl.setTitle(episode_titles[choice]);
+			ep_dl.setUrl(episodes_string[choice*3]);
+			ep_dl.setDate(episodes_string[choice*3 + 1]);
+			ep_dl.setFeedTitle(feed_name);
+		       	
+			episode_file_path = perl.call_perl_function_string("generate_episode_file_path", feed_name, ep_dl.getTitle(), ep_dl.getUrl());
+
+			downloadEpisode(ep_dl, episode_file_path);
+	
+			perl.call_perl_function_void(ep_dl.getFeedTitle(), ep_dl.getTitle(), ep_dl.getDate(), ep_dl.getUrl());	
+
+			break;
+		case 3: //baixar episodio
 			feeds_string = perl.call_perl_function_hash("get_feeds", "./feeds.json");
 			i = 2;
 			while (i < feeds_string.size())
@@ -173,7 +223,7 @@ feed_name = feed_titles[choice];
 
 			break;
 		
-		case 3: //Deletar episódio
+		case 4: //Deletar episódio
 			feeds_string = perl.call_perl_function_hash("get_feeds", "./feeds.json");
 			i = 2;
 			while (i < feeds_string.size())
@@ -210,7 +260,7 @@ ep_dl.setTitle(episode_titles[choice]);
 			perl.delete_episode(feed_name, ep_dl.getTitle());
 			break;
 		
-		case 4: //deletar feed
+		case 5: //deletar feed
 			feeds_string = perl.call_perl_function_hash("get_feeds", "./feeds.json");
 			
 			i = 2;
@@ -240,7 +290,7 @@ ep_dl.setTitle(episode_titles[choice]);
 
 		break;
 		
-		case 5:// mostrar episódio
+		case 6:// mostrar episódio
 			feeds_string = perl.call_perl_function_hash("get_feeds", "./feeds.json");
 			i = 2;
 			while (i < feeds_string.size())
@@ -275,7 +325,29 @@ ep_dl.setTitle(episode_titles[choice]);
 			playEpisode(ep_dl, episode_file_path);
 		break;
 		
-		case 6: //procurar novos episódios
+		case 7:
+			feeds_string = perl.call_perl_function_hash("get_feeds", "./feeds.json");
+			
+			i = 2;
+			while (i < feeds_string.size())
+			{
+				feed_titles.push_back(feeds_string[i]);
+				i += 3;
+			}
+			choice = callMenu(feed_titles);
+			if (choice == -1)
+			{
+				showError("Não há feeds disponíveis");
+				break;
+			}
+			
+			feed_dl.setTitle(feed_titles[choice]);
+			feed_dl.setUrl(feeds_string[choice*3]);
+			feed_dl.setLanguage(feeds_string[choice*3 + 1]);
+
+		break;
+		
+		case 8: //procurar novos episódios
 			feeds_string = perl.call_perl_function_hash("get_feeds", "./feeds.json");
 			
 			i = 2;
