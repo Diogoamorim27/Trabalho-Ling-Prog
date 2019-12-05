@@ -1,6 +1,6 @@
 package podcastUtils;
 
-#use 5.030000;
+use 5.030000;
 use strict;
 use warnings;
 use Carp;
@@ -15,7 +15,6 @@ use Encode;
 use Encode qw( decode_utf8 );
 use Text::Unaccent::PurePerl;
 use Unicode::Collate;
-#use File::Copy;
 
 require Exporter;
 use AutoLoader;
